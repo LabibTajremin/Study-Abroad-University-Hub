@@ -1,7 +1,14 @@
+<!-- Themed accent stripe -->
+<div class="country-accent-stripe"></div>
+
 <!-- Page Header -->
 <div class="page-header">
   <div class="page-header-left">
-    <span class="country-flag">{{ countryInfo?.flag || '🌍' }}</span>
+    @if (countryInfo?.iso2) {
+      <app-flag-icon class="country-flag" [code]="countryInfo!.iso2" [size]="48" />
+    } @else {
+      <span class="country-flag-fallback">🌍</span>
+    }
     <div>
       <h1 class="page-title">{{ countryInfo?.name || 'Universities' }}</h1>
       <p class="page-subtitle">Browse all {{ pagination.totalItems }} public, private & church-affiliated universities</p>

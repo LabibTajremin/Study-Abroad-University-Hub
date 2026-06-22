@@ -6,10 +6,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { filter } from 'rxjs/operators';
 import { RegionGroup, REGION_GROUPS } from '../../models/country.model';
 import { UniversityService } from '../../services/university';
+import { FlagIcon } from '../flag-icon/flag-icon';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [CommonModule, RouterModule, MatIconModule, MatTooltipModule],
+  imports: [CommonModule, RouterModule, MatIconModule, MatTooltipModule, FlagIcon],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })

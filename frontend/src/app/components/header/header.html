@@ -2,7 +2,7 @@
   <span class="header-title">Study Abroad University Hub</span>
   <span class="header-divider">|</span>
   <span class="header-country">
-    <span class="header-flag">{{ activeFlag }}</span>
+    <app-flag-icon class="header-flag" [code]="activeIso2" [size]="18" />
     {{ activeCountry }}
   </span>
 </mat-toolbar>

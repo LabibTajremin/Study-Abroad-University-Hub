@@ -3,19 +3,22 @@ import { Router, NavigationEnd } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { filter, map } from 'rxjs';
-import { SCHENGEN_COUNTRIES } from '../../models/country.model';
+import { REGION_GROUPS } from '../../models/country.model';
+import { FlagIcon } from '../flag-icon/flag-icon';
 
 @Component({
   selector: 'app-header',
-  imports: [MatToolbarModule, MatIconModule],
+  imports: [MatToolbarModule, MatIconModule, FlagIcon],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
   private readonly router = inject(Router);
 
+  private readonly allCountries = REGION_GROUPS.flatMap((g) => g.countries);
+
   activeCountry = 'Germany';
-  activeFlag = '🇩🇪';
+  activeIso2 = 'de';
 
   constructor() {
     this.router.events
@@ -27,9 +30,9 @@ export class Header {
         })
       )
       .subscribe((slug) => {
-        const found = SCHENGEN_COUNTRIES.find((c) => c.slug === slug);
+        const found = this.allCountries.find((c) => c.slug === slug);
         this.activeCountry = found?.name || 'Germany';
-        this.activeFlag = found?.flag || '🇩🇪';
+        this.activeIso2 = found?.iso2 || 'de';
       });
   }
 }

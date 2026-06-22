@@ -1,7 +1,7 @@
 <div class="coming-soon-container">
   <div class="coming-soon-card">
     @if (country) {
-      <span class="cs-flag">{{ country.flag }}</span>
+      <app-flag-icon class="cs-flag" [code]="country.iso2" [size]="56" />
       <h1 class="cs-title">{{ country.name }}</h1>
     } @else {
       <mat-icon class="cs-icon">public</mat-icon>

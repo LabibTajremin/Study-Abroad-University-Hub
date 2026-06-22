@@ -61,7 +61,7 @@
            routerLinkActive="active"
            [matTooltip]="isCollapsed ? group.label : ''"
            matTooltipPosition="right">
-          <span class="nav-flag">{{ group.icon }}</span>
+          <app-flag-icon class="nav-flag" [code]="group.countries[0].iso2" [size]="20" />
           @if (!isCollapsed) {
             <span class="nav-label">{{ group.label }}</span>
           }
@@ -92,7 +92,7 @@
                    routerLinkActive="active"
                    [matTooltip]="isCollapsed ? country.name : ''"
                    matTooltipPosition="right">
-                  <span class="nav-flag">{{ country.flag }}</span>
+                  <app-flag-icon class="nav-flag" [code]="country.iso2" [size]="20" />
                   @if (!isCollapsed) {
                     <span class="nav-label">{{ country.name }}</span>
                   }

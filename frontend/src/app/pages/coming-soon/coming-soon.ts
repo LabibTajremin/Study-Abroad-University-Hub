@@ -5,10 +5,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Subscription } from 'rxjs';
 import { REGION_GROUPS, Country } from '../../models/country.model';
+import { FlagIcon } from '../../components/flag-icon/flag-icon';
 
 @Component({
   selector: 'app-coming-soon',
-  imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule, FlagIcon],
   templateUrl: './coming-soon.html',
   styleUrl: './coming-soon.scss',
 })

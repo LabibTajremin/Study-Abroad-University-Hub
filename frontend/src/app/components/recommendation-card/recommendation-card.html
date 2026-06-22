@@ -4,7 +4,7 @@
 
   <!-- Header -->
   <div class="card-header">
-    <span class="country-flag">{{ flag }}</span>
+    <app-flag-icon class="country-flag" [code]="flagIso2" [size]="28" />
     <div class="header-text">
       <h3 class="uni-name">{{ recommendation.university.name }}</h3>
       <p class="uni-location">{{ recommendation.university.city }}, {{ recommendation.countryName }}</p>

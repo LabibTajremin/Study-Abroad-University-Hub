@@ -5,10 +5,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UniversityRecommendation } from '../../models/university.model';
 import { REGION_GROUPS } from '../../models/country.model';
+import { FlagIcon } from '../flag-icon/flag-icon';
 
 @Component({
   selector: 'app-recommendation-card',
-  imports: [CommonModule, RouterLink, MatIconModule, MatTooltipModule],
+  imports: [CommonModule, RouterLink, MatIconModule, MatTooltipModule, FlagIcon],
   templateUrl: './recommendation-card.html',
   styleUrl: './recommendation-card.scss',
 })
@@ -16,12 +17,12 @@ export class RecommendationCard {
   @Input() recommendation!: UniversityRecommendation;
   @Input() rank = 1;
 
-  private readonly flagMap = Object.fromEntries(
-    REGION_GROUPS.flatMap((g) => g.countries.map((c) => [c.slug, c.flag]))
+  private readonly iso2Map = Object.fromEntries(
+    REGION_GROUPS.flatMap((g) => g.countries.map((c) => [c.slug, c.iso2]))
   );
 
-  get flag(): string {
-    return this.flagMap[this.recommendation.countrySlug] ?? '🌍';
+  get flagIso2(): string {
+    return this.iso2Map[this.recommendation.countrySlug] ?? '';
   }
 
   get difficultyLabel(): string {

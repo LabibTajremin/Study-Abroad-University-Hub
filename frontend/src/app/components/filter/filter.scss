@@ -58,8 +58,8 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 
   &:focus-within {
-    border-color: #3B82F6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: var(--country-accent, #3B82F6);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--country-accent, #3B82F6) 12%, transparent);
   }
 
   &.disabled {
@@ -181,12 +181,12 @@
 }
 
 .btn-filter {
-  background: #3B82F6;
+  background: var(--country-accent, #3B82F6);
   color: #fff;
-  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--country-accent, #3B82F6) 40%, transparent);
 
   &:hover {
-    background: #2563EB;
+    background: color-mix(in srgb, var(--country-accent, #3B82F6) 85%, black);
     box-shadow: var(--shadow-md);
 
     mat-icon {

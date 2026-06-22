@@ -13,10 +13,9 @@
 }
 
 .cs-flag {
-  font-size: 72px;
-  line-height: 1;
   display: block;
-  margin-bottom: 12px;
+  margin: 0 auto 16px;
+  border-radius: 6px;
 }
 
 .cs-icon {
@@ -94,10 +93,6 @@
 @media (max-width: 500px) {
   .cs-features {
     grid-template-columns: 1fr;
-  }
-
-  .cs-flag {
-    font-size: 56px;
   }
 
   .cs-title {

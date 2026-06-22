@@ -27,9 +27,9 @@
   gap: 6px;
   padding: 8px 18px;
   border-radius: var(--radius-md);
-  border: 1px solid #2563EB;
-  background: #EFF6FF;
-  color: #2563EB;
+  border: 1px solid var(--country-accent, #2563EB);
+  background: color-mix(in srgb, var(--country-accent, #2563EB) 8%, white);
+  color: var(--country-accent, #2563EB);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -44,7 +44,7 @@
   }
 
   &:hover {
-    background: #2563EB;
+    background: var(--country-accent, #2563EB);
     color: #fff;
     box-shadow: var(--shadow-md);
 
@@ -54,7 +54,7 @@
   }
 
   &:active {
-    background: #1D4ED8;
+    background: color-mix(in srgb, var(--country-accent, #2563EB) 85%, black);
     color: #fff;
   }
 }
@@ -77,7 +77,7 @@
     font-weight: 600;
     font-size: 12.5px;
     letter-spacing: 0.4px;
-    border-bottom: 2px solid #3B82F6;
+    border-bottom: 2px solid var(--country-accent, #3B82F6);
     padding: 14px 18px !important;
     white-space: nowrap;
   }
@@ -145,7 +145,7 @@ table {
   white-space: nowrap;
 
   &.rank-top100 {
-    background: #2563EB;
+    background: var(--country-accent, #2563EB);
     color: #fff;
   }
 

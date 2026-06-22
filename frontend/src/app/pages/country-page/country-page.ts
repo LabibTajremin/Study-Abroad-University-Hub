@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,8 +6,9 @@ import { Subscription } from 'rxjs';
 import { Filter } from '../../components/filter/filter';
 import { UniversityTable } from '../../components/university-table/university-table';
 import { LoadingSpinner } from '../../components/loading-spinner/loading-spinner';
+import { FlagIcon } from '../../components/flag-icon/flag-icon';
 import { UniversityService } from '../../services/university';
-import { REGION_GROUPS, Country } from '../../models/country.model';
+import { REGION_GROUPS, Country, COUNTRY_THEMES } from '../../models/country.model';
 import {
   University,
   UniversityFilters,
@@ -18,7 +19,7 @@ import {
 
 @Component({
   selector: 'app-country-page',
-  imports: [CommonModule, MatIconModule, Filter, UniversityTable, LoadingSpinner],
+  imports: [CommonModule, MatIconModule, Filter, UniversityTable, LoadingSpinner, FlagIcon],
   templateUrl: './country-page.html',
   styleUrl: './country-page.scss',
 })
@@ -31,6 +32,13 @@ export class CountryPage implements OnInit, OnDestroy {
   // Country info
   countrySlug = '';  // empty so first load always triggers
   countryInfo: Country | null = null;
+
+  /** Sets --country-accent on the host element so child components (table, filter)
+   *  can pick up the per-country theme color via CSS variable inheritance. */
+  @HostBinding('style.--country-accent')
+  get accentColor(): string {
+    return COUNTRY_THEMES[this.countrySlug] || '#3B82F6';
+  }
 
   allUniversities: University[] = [];
   filteredUniversities: University[] = [];
