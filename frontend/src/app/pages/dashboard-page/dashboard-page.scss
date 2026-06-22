@@ -113,8 +113,8 @@
 .stats-bar {
   display: flex;
   gap: 0;
-  background: #fff;
-  border-bottom: 1px solid #E2E8F0;
+  background: var(--surface, #fff);
+  border-bottom: 1px solid var(--border, #E2E8F0);
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
@@ -124,7 +124,7 @@
   gap: 12px;
   padding: 18px 28px;
   flex: 1;
-  border-right: 1px solid #F1F5F9;
+  border-right: 1px solid var(--border-light, #F1F5F9);
 
   &:last-child {
     border-right: none;
@@ -141,13 +141,13 @@
 .stat-value {
   font-size: 26px;
   font-weight: 800;
-  color: #0F172A;
+  color: var(--text-primary, #0F172A);
   line-height: 1;
 }
 
 .stat-label {
   font-size: 12px;
-  color: #64748B;
+  color: var(--text-muted, #64748B);
   margin-top: 3px;
   font-weight: 500;
 }
@@ -164,7 +164,7 @@
   gap: 8px;
   font-size: 20px;
   font-weight: 700;
-  color: #0F172A;
+  color: var(--text-primary, #0F172A);
   margin: 0 0 6px;
 
   mat-icon {
@@ -177,7 +177,7 @@
 
 .section-sub {
   font-size: 14px;
-  color: #64748B;
+  color: var(--text-muted, #64748B);
   margin: 0 0 20px;
 }
 
@@ -194,8 +194,8 @@
   align-items: center;
   gap: 14px;
   padding: 16px 18px;
-  background: #fff;
-  border: 1px solid #E2E8F0;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #E2E8F0);
   border-radius: var(--radius-lg);
   text-decoration: none;
   transition: border-color 0.18s var(--ease-standard), box-shadow 0.18s var(--ease-standard), transform 0.18s var(--ease-standard);
@@ -240,12 +240,12 @@
 .cat-label {
   font-size: 14px;
   font-weight: 600;
-  color: #0F172A;
+  color: var(--text-primary, #0F172A);
 }
 
 .cat-desc {
   font-size: 12px;
-  color: #64748B;
+  color: var(--text-muted, #64748B);
   line-height: 1.45;
 }
 
@@ -275,11 +275,11 @@
   align-items: center;
   gap: 8px;
   padding: 8px 14px;
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
+  background: var(--surface-alt, #F8FAFC);
+  border: 1px solid var(--border, #E2E8F0);
   border-radius: var(--radius-pill);
   font-size: 13px;
-  color: #334155;
+  color: var(--text-secondary, #334155);
   transition: background-color 0.15s var(--ease-standard), border-color 0.15s var(--ease-standard), color 0.15s var(--ease-standard), transform 0.15s var(--ease-standard), box-shadow 0.15s var(--ease-standard);
 
   &.clickable {
@@ -310,8 +310,8 @@
 
 .region-count {
   font-size: 11px;
-  color: #94A3B8;
-  background: #F1F5F9;
+  color: var(--text-faint, #94A3B8);
+  background: var(--border-light, #F1F5F9);
   padding: 1px 7px;
   border-radius: 10px;
 }

@@ -1,27 +1,35 @@
 .app-header {
-  background: #fff;
+  background: var(--surface, #fff);
   color: #333;
   padding: 0 24px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid var(--border, #e8e8e8);
   min-height: 54px;
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
+.header-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
 .header-title {
   font-size: 16px;
   font-weight: 600;
-  color: #0F172A;
+  color: var(--text-primary, #0F172A);
   letter-spacing: 0.2px;
 }
 
 .header-divider {
-  color: #ddd;
+  color: var(--border, #ddd);
   font-weight: 300;
 }
 
@@ -30,10 +38,72 @@
   align-items: center;
   gap: 6px;
   font-size: 14px;
-  color: #666;
+  color: var(--text-secondary, #666);
   font-weight: 500;
 }
 
 .header-flag {
   font-size: 18px;
+}
+
+// ── Theme toggle switch ──
+.theme-toggle {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  border-radius: var(--radius-pill, 13px);
+  background: #CBD5E1;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background-color 0.25s var(--ease-standard, ease);
+
+  &:hover {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  }
+
+  &.is-dark {
+    background: #475569;
+  }
+}
+
+.theme-toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s var(--ease-standard, ease), background-color 0.25s var(--ease-standard, ease);
+}
+
+.theme-toggle.is-dark .theme-toggle-knob {
+  transform: translateX(22px);
+  background: #0F172A;
+}
+
+.theme-toggle:active .theme-toggle-knob {
+  transform: scale(0.9);
+}
+
+.theme-toggle.is-dark:active .theme-toggle-knob {
+  transform: translateX(22px) scale(0.9);
+}
+
+.theme-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  color: #F59E0B;
+  transition: color 0.2s var(--ease-standard, ease);
+}
+
+.theme-toggle.is-dark .theme-icon {
+  color: #CBD5E1;
 }

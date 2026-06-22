@@ -11,8 +11,23 @@ html {
   ));
 }
 
+// Re-emits Material's --mat-sys-* tokens with dark color roles when the
+// theme toggle sets data-theme="dark" on <html> — this re-themes stock
+// Material components (toolbar, select, checkbox, paginator, etc.)
+// automatically without any per-component overrides.
+html[data-theme='dark'] {
+  @include mat.theme((
+    color: (
+      theme-type: dark,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
 body {
-  color-scheme: light;
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
@@ -40,6 +55,35 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.16);
 
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  // ── Semantic theme tokens (light defaults) ──
+  // Component stylesheets should reference these via var(--token, <light-fallback>)
+  // so they degrade gracefully even before a component has been retrofitted.
+  --page-bg: #F8FAFC;
+  --surface: #ffffff;
+  --surface-alt: #F8FAFC;
+  --surface-hover: #F1F5F9;
+  --border: #E2E8F0;
+  --border-light: #F1F5F9;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+  --text-faint: #94A3B8;
+  --row-hover: #EEF2FF;
+}
+
+html[data-theme='dark'] {
+  --page-bg: #0B1220;
+  --surface: #161E2E;
+  --surface-alt: #1E293B;
+  --surface-hover: #243044;
+  --border: #2D3B52;
+  --border-light: #243044;
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --text-faint: #64748B;
+  --row-hover: #1E2A45;
 }
 
 // ── Shared button motion ──
@@ -87,10 +131,10 @@ div.bma-panel,
   max-width: 400px !important;
   max-height: 350px !important;
   border-radius: 10px !important;
-  border: 1px solid #E2E8F0 !important;
+  border: 1px solid var(--border, #E2E8F0) !important;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
   padding: 0 !important;
-  background: #fff !important;
+  background: var(--surface, #fff) !important;
 
   // Thin scrollbar
   &::-webkit-scrollbar {
@@ -118,8 +162,8 @@ div.bma-panel .bma-search-wrapper {
   align-items: center !important;
   gap: 10px !important;
   padding: 12px 16px !important;
-  border-bottom: 1px solid #E2E8F0 !important;
-  background: #fff !important;
+  border-bottom: 1px solid var(--border, #E2E8F0) !important;
+  background: var(--surface, #fff) !important;
   position: sticky !important;
   top: 0 !important;
   z-index: 3 !important;
@@ -144,7 +188,7 @@ div.bma-panel .bma-search-input {
   width: 100% !important;
   padding: 0 !important;
   font-family: Roboto, sans-serif !important;
-  color: #0F172A !important;
+  color: var(--text-primary, #0F172A) !important;
   background: transparent !important;
 }
 
@@ -159,19 +203,19 @@ div.bma-panel .mat-mdc-option,
   min-height: 48px !important;
   padding: 0 20px !important;
   font-size: 14px !important;
-  color: #1E293B !important;
+  color: var(--text-primary, #1E293B) !important;
   border: none !important;
   border-bottom: none !important;
 }
 
 .bma-panel .mat-mdc-option .mdc-list-item__primary-text {
   font-size: 14px !important;
-  color: #1E293B !important;
+  color: var(--text-primary, #1E293B) !important;
   font-weight: 400 !important;
 }
 
 .bma-panel .mat-mdc-option:hover {
-  background: #F8FAFC !important;
+  background: var(--surface-hover, #F8FAFC) !important;
 }
 
 .bma-panel .mat-mdc-option.mdc-list-item--selected {

@@ -1,19 +1,23 @@
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { filter, map } from 'rxjs';
 import { REGION_GROUPS } from '../../models/country.model';
 import { FlagIcon } from '../flag-icon/flag-icon';
+import { ThemeService } from '../../services/theme';
 
 @Component({
   selector: 'app-header',
-  imports: [MatToolbarModule, MatIconModule, FlagIcon],
+  imports: [CommonModule, MatToolbarModule, MatIconModule, MatTooltipModule, FlagIcon],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
   private readonly router = inject(Router);
+  readonly themeService = inject(ThemeService);
 
   private readonly allCountries = REGION_GROUPS.flatMap((g) => g.countries);
 

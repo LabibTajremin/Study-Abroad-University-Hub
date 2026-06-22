@@ -1,10 +1,26 @@
 <mat-toolbar class="app-header">
-  <span class="header-title">Study Abroad University Hub</span>
-  @if (activeCountry && activeIso2) {
-    <span class="header-divider">|</span>
-    <span class="header-country">
-      <app-flag-icon class="header-flag" [code]="activeIso2" [size]="18" />
-      {{ activeCountry }}
-    </span>
+  <div class="header-breadcrumb">
+    <span class="header-title">Study Abroad University Hub</span>
+    @if (activeCountry && activeIso2) {
+      <span class="header-divider">|</span>
+      <span class="header-country">
+        <app-flag-icon class="header-flag" [code]="activeIso2" [size]="18" />
+        {{ activeCountry }}
+      </span>
+    }
+  </div>
+
+  @if (themeService.theme$ | async; as theme) {
+    <button
+      type="button"
+      class="theme-toggle"
+      [class.is-dark]="theme === 'dark'"
+      (click)="themeService.toggle()"
+      [attr.aria-label]="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+      [matTooltip]="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'">
+      <span class="theme-toggle-knob">
+        <mat-icon class="theme-icon">{{ theme === 'dark' ? 'dark_mode' : 'light_mode' }}</mat-icon>
+      </span>
+    </button>
   }
 </mat-toolbar>

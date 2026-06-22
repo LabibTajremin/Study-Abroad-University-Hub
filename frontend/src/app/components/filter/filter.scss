@@ -4,8 +4,8 @@
 
 .filter-card {
   margin: 20px 24px 12px;
-  background: #fff;
-  border: 1px solid #E2E8F0;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #E2E8F0);
   border-radius: var(--radius-lg);
   padding: 22px 24px;
   box-shadow: var(--shadow-xs);
@@ -27,7 +27,7 @@
 .field-label {
   font-size: 13px;
   font-weight: 500;
-  color: #334155;
+  color: var(--text-secondary, #334155);
   letter-spacing: 0.2px;
 }
 
@@ -50,11 +50,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--border, #E2E8F0);
   border-radius: var(--radius-md);
   padding: 0 12px;
   height: 44px;
-  background: #fff;
+  background: var(--surface, #fff);
   transition: border-color 0.2s, box-shadow 0.2s;
 
   &:focus-within {
@@ -63,7 +63,7 @@
   }
 
   &.disabled {
-    background: #F8FAFC;
+    background: var(--surface-alt, #F8FAFC);
     cursor: not-allowed;
   }
 }
@@ -83,7 +83,7 @@
   width: 100%;
   padding: 0;
   font-family: inherit;
-  color: #333;
+  color: var(--text-primary, #333);
   background: transparent;
   line-height: 44px;
 
@@ -92,7 +92,7 @@
   }
 
   &:read-only {
-    color: #888;
+    color: var(--text-muted, #888);
     cursor: not-allowed;
   }
 }
@@ -100,13 +100,13 @@
 // ── Custom Select Wrapper (mat-select inside BMA border) ──
 .custom-select-wrapper {
   position: relative;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--border, #E2E8F0);
   border-radius: var(--radius-md);
   height: 44px;
   display: flex;
   align-items: center;
   padding: 0 12px;
-  background: #fff;
+  background: var(--surface, #fff);
   transition: border-color 0.2s, box-shadow 0.2s;
   cursor: pointer;
 
@@ -196,9 +196,9 @@
 }
 
 .btn-reset {
-  background: #F1F5F9;
-  color: #475569;
-  border: 1px solid #E2E8F0;
+  background: var(--border-light, #F1F5F9);
+  color: var(--text-secondary, #475569);
+  border: 1px solid var(--border, #E2E8F0);
 
   &:hover {
     background: #E2E8F0;
@@ -216,10 +216,10 @@
   gap: 8px;
   align-self: flex-start;
   padding: 8px 14px;
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
+  background: var(--surface-alt, #F8FAFC);
+  border: 1px solid var(--border, #E2E8F0);
   border-radius: var(--radius-md);
-  color: #475569;
+  color: var(--text-secondary, #475569);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -250,7 +250,7 @@
 // ── Advanced Row ──
 .advanced-row {
   padding-top: 16px;
-  border-top: 1px dashed #E2E8F0;
+  border-top: 1px dashed var(--border, #E2E8F0);
   animation: filterRowReveal 0.22s var(--ease-standard);
 }
 
@@ -272,7 +272,7 @@
   ::ng-deep {
     .mat-mdc-checkbox label {
       font-size: 13px;
-      color: #334155;
+      color: var(--text-secondary, #334155);
       cursor: pointer;
     }
   }

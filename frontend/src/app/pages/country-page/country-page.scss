@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 24px 24px 16px;
-  border-bottom: 1px solid #F1F5F9;
+  border-bottom: 1px solid var(--border-light, #F1F5F9);
   margin-bottom: 4px;
 }
 
@@ -32,7 +32,7 @@
   margin: 0;
   font-size: 24px;
   font-weight: 700;
-  color: #0F172A;
+  color: var(--text-primary, #0F172A);
   letter-spacing: -0.3px;
   position: relative;
   display: inline-block;
@@ -53,7 +53,7 @@
 .page-subtitle {
   margin: 3px 0 0;
   font-size: 13.5px;
-  color: #64748B;
+  color: var(--text-muted, #64748B);
 }
 
 .error-container {

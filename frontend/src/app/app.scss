@@ -14,7 +14,7 @@
 
 .page-content {
   flex: 1;
-  background: #F8FAFC;
+  background: var(--page-bg, #F8FAFC);
 }
 
 .app-footer {
