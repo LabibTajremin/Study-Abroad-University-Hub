@@ -69,7 +69,13 @@
       <div class="region-chip"
            [routerLink]="r.slug ? ['/country', r.slug] : null"
            [class.clickable]="r.slug">
-        <span class="region-flag">{{ r.flag }}</span>
+        @if (r.iso2) {
+          <app-flag-icon class="region-flag" [code]="r.iso2" [size]="18" />
+        } @else if (r.materialIcon) {
+          <span class="region-flag region-flag-badge"><mat-icon>{{ r.materialIcon }}</mat-icon></span>
+        } @else {
+          <span class="region-flag">{{ r.flag }}</span>
+        }
         <span class="region-name">{{ r.label }}</span>
         <span class="region-count">{{ r.count }} {{ r.count === 1 ? 'country' : 'countries' }}</span>
       </div>

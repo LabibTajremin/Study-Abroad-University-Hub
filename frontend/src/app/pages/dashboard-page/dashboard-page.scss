@@ -302,6 +302,23 @@
 
 .region-flag {
   font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.region-flag-badge {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background: rgba(59, 130, 246, 0.12);
+  justify-content: center;
+
+  mat-icon {
+    font-size: 13px;
+    width: 13px;
+    height: 13px;
+    color: #3B82F6;
+  }
 }
 
 .region-name {

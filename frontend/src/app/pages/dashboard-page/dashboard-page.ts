@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { UniversityService } from '../../services/university';
 import { RecommendationService } from '../../services/recommendation';
 import { REGION_GROUPS } from '../../models/country.model';
+import { FlagIcon } from '../../components/flag-icon/flag-icon';
 
 interface StatCard {
   icon: string;
@@ -23,6 +24,8 @@ interface FeatureItem {
 
 interface RegionStat {
   flag: string;
+  iso2?: string;
+  materialIcon?: string;
   label: string;
   count: number;
   slug: string;
@@ -30,7 +33,7 @@ interface RegionStat {
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [CommonModule, RouterLink, MatIconModule],
+  imports: [CommonModule, RouterLink, MatIconModule, FlagIcon],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',
 })
@@ -100,6 +103,8 @@ export class DashboardPage implements OnInit {
 
   regionStats: RegionStat[] = REGION_GROUPS.map((g) => ({
     flag: g.icon,
+    iso2: g.iso2,
+    materialIcon: g.materialIcon,
     label: g.label,
     count: g.countries.length,
     slug: g.countries.length === 1 ? g.countries[0].slug : '',

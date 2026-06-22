@@ -93,6 +93,7 @@ export const MIDDLE_EAST_COUNTRIES: Country[] = [
 const SCHENGEN_GROUP: RegionGroup = {
   label: 'Schengen Area',
   icon: '🇪🇺',
+  iso2: 'eu',
   slug: 'schengen',
   countries: SCHENGEN_COUNTRIES,
 };
@@ -108,6 +109,7 @@ const UK_GROUP: RegionGroup = {
 const IRELAND_GROUP: RegionGroup = {
   label: 'Ireland',
   icon: '🇮🇪',
+  iso2: 'ie',
   slug: 'ireland',
   countries: [{ name: 'Ireland', slug: 'ireland', flag: '🇮🇪', iso2: 'ie', isActive: true }],
 };
