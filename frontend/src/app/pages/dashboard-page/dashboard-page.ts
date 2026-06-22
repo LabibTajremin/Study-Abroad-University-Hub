@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { UniversityService } from '../../services/university';
+import { RecommendationService } from '../../services/recommendation';
 import { REGION_GROUPS } from '../../models/country.model';
 
 interface StatCard {
@@ -35,12 +36,13 @@ interface RegionStat {
 })
 export class DashboardPage implements OnInit {
   private readonly universityService = inject(UniversityService);
+  private readonly recommendationService = inject(RecommendationService);
   private readonly router = inject(Router);
 
   stats: StatCard[] = [
-    { icon: 'school',     value: '500+',  label: 'Universities',      color: '#3B82F6' },
-    { icon: 'public',     value: '38',    label: 'Countries',         color: '#10B981' },
-    { icon: 'map',        value: '9',     label: 'Regions',           color: '#8B5CF6' },
+    { icon: 'school',     value: '...',  label: 'Universities',      color: '#3B82F6' },
+    { icon: 'public',     value: String(this.universityService.getAllCountrySlugs().length), label: 'Countries', color: '#10B981' },
+    { icon: 'map',        value: String(REGION_GROUPS.length),    label: 'Regions',           color: '#8B5CF6' },
     { icon: 'payments',   value: 'Free',  label: 'Min Tuition',       color: '#F59E0B' },
   ];
 
@@ -103,7 +105,12 @@ export class DashboardPage implements OnInit {
     slug: g.countries.length === 1 ? g.countries[0].slug : '',
   }));
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.recommendationService.loadAllCountries().subscribe((unis) => {
+      const rounded = Math.floor(unis.length / 100) * 100;
+      this.stats[0].value = `${rounded}+`;
+    });
+  }
 
   navigateTo(route: string): void {
     this.router.navigate([route]);

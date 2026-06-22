@@ -64,8 +64,9 @@ export const routes: Routes = [
   // ── Ireland ──
   { path: 'country/ireland',        component: CountryPage },
 
-  // ── United States ──
+  // ── North America ──
   { path: 'country/usa',            component: CountryPage },
+  { path: 'country/canada',         component: CountryPage },
 
   // ── Oceania ──
   { path: 'country/australia',      component: CountryPage },
@@ -75,6 +76,13 @@ export const routes: Routes = [
   { path: 'country/malaysia',       component: CountryPage },
   { path: 'country/japan',          component: CountryPage },
   { path: 'country/south-korea',    component: CountryPage },
+  { path: 'country/china',          component: CountryPage },
+  { path: 'country/india',          component: CountryPage },
+  { path: 'country/singapore',      component: CountryPage },
+
+  // ── Middle East ──
+  { path: 'country/uae',            component: CountryPage },
+  { path: 'country/turkey',         component: CountryPage },
 
   // Fallback
   { path: 'country/:country', component: ComingSoon },

@@ -55,6 +55,12 @@ export class UniversityService {
     malaysia: 'data/malaysia-universities.json',
     japan: 'data/japan-universities.json',
     'south-korea': 'data/south-korea-universities.json',
+    canada: 'data/canada-universities.json',
+    singapore: 'data/singapore-universities.json',
+    uae: 'data/uae-universities.json',
+    india: 'data/india-universities.json',
+    turkey: 'data/turkey-universities.json',
+    china: 'data/china-universities.json',
   };
 
   private readonly loadingSubject = new BehaviorSubject<boolean>(false);

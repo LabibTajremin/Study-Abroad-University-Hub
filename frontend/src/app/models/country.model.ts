@@ -45,8 +45,13 @@ export const SCHENGEN_COUNTRIES: Country[] = [
 ];
 
 export const UK_COUNTRIES: Country[] = [
-  { name: 'England', slug: 'uk',    flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', isActive: true },
-  { name: 'Wales',   slug: 'wales', flag: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', isActive: true },
+  { name: 'United Kingdom', slug: 'uk',    flag: '🇬🇧', isActive: true },
+  { name: 'Wales',          slug: 'wales', flag: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', isActive: true },
+];
+
+export const NORTH_AMERICA_COUNTRIES: Country[] = [
+  { name: 'United States', slug: 'usa',    flag: '🇺🇸', isActive: true },
+  { name: 'Canada',        slug: 'canada', flag: '🇨🇦', isActive: true },
 ];
 
 export const OCEANIA_COUNTRIES: Country[] = [
@@ -58,6 +63,14 @@ export const ASIA_COUNTRIES: Country[] = [
   { name: 'Malaysia',    slug: 'malaysia',     flag: '🇲🇾', isActive: true },
   { name: 'Japan',       slug: 'japan',        flag: '🇯🇵', isActive: true },
   { name: 'South Korea', slug: 'south-korea',  flag: '🇰🇷', isActive: true },
+  { name: 'China',       slug: 'china',        flag: '🇨🇳', isActive: true },
+  { name: 'India',       slug: 'india',        flag: '🇮🇳', isActive: true },
+  { name: 'Singapore',   slug: 'singapore',    flag: '🇸🇬', isActive: true },
+];
+
+export const MIDDLE_EAST_COUNTRIES: Country[] = [
+  { name: 'United Arab Emirates', slug: 'uae',    flag: '🇦🇪', isActive: true },
+  { name: 'Turkey',               slug: 'turkey', flag: '🇹🇷', isActive: true },
 ];
 
 export const REGION_GROUPS: RegionGroup[] = [
@@ -80,14 +93,14 @@ export const REGION_GROUPS: RegionGroup[] = [
     countries: [{ name: 'Ireland', slug: 'ireland', flag: '🇮🇪', isActive: true }],
   },
   {
-    label: 'United States',
+    label: 'North America',
     icon: '🇺🇸',
-    slug: 'usa',
-    countries: [{ name: 'United States', slug: 'usa', flag: '🇺🇸', isActive: true }],
+    slug: 'north-america',
+    countries: NORTH_AMERICA_COUNTRIES,
   },
   {
     label: 'Oceania',
-    icon: '🌏',
+    icon: '🏝️',
     slug: 'oceania',
     countries: OCEANIA_COUNTRIES,
   },
@@ -96,5 +109,11 @@ export const REGION_GROUPS: RegionGroup[] = [
     icon: '🌏',
     slug: 'asia',
     countries: ASIA_COUNTRIES,
+  },
+  {
+    label: 'Middle East',
+    icon: '🕌',
+    slug: 'middle-east',
+    countries: MIDDLE_EAST_COUNTRIES,
   },
 ];

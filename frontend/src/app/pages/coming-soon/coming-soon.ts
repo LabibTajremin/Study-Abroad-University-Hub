@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Subscription } from 'rxjs';
-import { SCHENGEN_COUNTRIES, Country } from '../../models/country.model';
+import { REGION_GROUPS, Country } from '../../models/country.model';
 
 @Component({
   selector: 'app-coming-soon',
@@ -22,7 +22,8 @@ export class ComingSoon implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.route.params.subscribe((params) => {
       this.countrySlug = params['country'];
-      this.country = SCHENGEN_COUNTRIES.find((c) => c.slug === this.countrySlug) || null;
+      this.country =
+        REGION_GROUPS.flatMap((g) => g.countries).find((c) => c.slug === this.countrySlug) || null;
     });
   }
 
