@@ -1,0 +1,16 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#60A5FA"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#g)"/>
+  <!-- mortarboard top -->
+  <polygon points="32,12 58,26 32,40 6,26" fill="#ffffff"/>
+  <!-- head band -->
+  <rect x="22" y="28" width="20" height="14" rx="7" fill="#ffffff"/>
+  <!-- tassel -->
+  <line x1="58" y1="26" x2="54" y2="44" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="54" cy="47" r="3.5" fill="#ffffff"/>
+</svg>
