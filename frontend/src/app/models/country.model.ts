@@ -11,7 +11,22 @@ export interface RegionGroup {
   label: string;
   icon: string;
   slug: string;
+  /** ISO 3166-1 alpha-2 code, or a region code like 'eu' — used for a real flag/logo image when this group represents one specific nation/union. */
+  iso2?: string;
+  /** Material icon name to use as a logo badge when no single flag applies (e.g. a multi-nation region like North America). */
+  materialIcon?: string;
   countries: Country[];
+}
+
+/** A node in the sidebar's nested navigation tree — either a parent with `children`, or a leaf with `countries`. */
+export interface SidebarNode {
+  label: string;
+  icon: string;
+  slug: string;
+  iso2?: string;
+  materialIcon?: string;
+  countries?: Country[];
+  children?: SidebarNode[];
 }
 
 export const SCHENGEN_COUNTRIES: Country[] = [
@@ -75,49 +90,86 @@ export const MIDDLE_EAST_COUNTRIES: Country[] = [
   { name: 'Turkey',               slug: 'turkey', flag: '🇹🇷', iso2: 'tr', isActive: true },
 ];
 
+const SCHENGEN_GROUP: RegionGroup = {
+  label: 'Schengen Area',
+  icon: '🇪🇺',
+  slug: 'schengen',
+  countries: SCHENGEN_COUNTRIES,
+};
+
+const UK_GROUP: RegionGroup = {
+  label: 'United Kingdom',
+  icon: '🇬🇧',
+  iso2: 'gb',
+  slug: 'uk-group',
+  countries: UK_COUNTRIES,
+};
+
+const IRELAND_GROUP: RegionGroup = {
+  label: 'Ireland',
+  icon: '🇮🇪',
+  slug: 'ireland',
+  countries: [{ name: 'Ireland', slug: 'ireland', flag: '🇮🇪', iso2: 'ie', isActive: true }],
+};
+
+const NORTH_AMERICA_GROUP: RegionGroup = {
+  label: 'North America',
+  icon: '🌎',
+  materialIcon: 'public',
+  slug: 'north-america',
+  countries: NORTH_AMERICA_COUNTRIES,
+};
+
+const OCEANIA_GROUP: RegionGroup = {
+  label: 'Oceania',
+  icon: '🏝️',
+  slug: 'oceania',
+  countries: OCEANIA_COUNTRIES,
+};
+
+const ASIA_GROUP: RegionGroup = {
+  label: 'Asia',
+  icon: '🌏',
+  slug: 'asia',
+  countries: ASIA_COUNTRIES,
+};
+
+const MIDDLE_EAST_GROUP: RegionGroup = {
+  label: 'Middle East',
+  icon: '🕌',
+  slug: 'middle-east',
+  countries: MIDDLE_EAST_COUNTRIES,
+};
+
+/** Flat list of every region/leaf group — used by the dashboard, header, recommendations, etc. */
 export const REGION_GROUPS: RegionGroup[] = [
+  SCHENGEN_GROUP,
+  UK_GROUP,
+  IRELAND_GROUP,
+  NORTH_AMERICA_GROUP,
+  OCEANIA_GROUP,
+  ASIA_GROUP,
+  MIDDLE_EAST_GROUP,
+];
+
+/**
+ * Nested tree used only by the sidebar's navigation: Schengen, the UK and
+ * Ireland are grouped under a single "Europe" parent (since they're all in
+ * Europe geographically, even though each has a distinct visa/immigration
+ * system), while other regions stay as flat top-level entries.
+ */
+export const SIDEBAR_TREE: SidebarNode[] = [
   {
-    label: 'Europe (Schengen)',
+    label: 'Europe',
     icon: '🇪🇺',
-    slug: 'schengen',
-    countries: SCHENGEN_COUNTRIES,
+    iso2: 'eu',
+    slug: 'europe',
+    children: [SCHENGEN_GROUP, UK_GROUP, IRELAND_GROUP],
   },
-  {
-    label: 'United Kingdom',
-    icon: '🇬🇧',
-    slug: 'uk-group',
-    countries: UK_COUNTRIES,
-  },
-  {
-    label: 'Ireland',
-    icon: '🇮🇪',
-    slug: 'ireland',
-    countries: [{ name: 'Ireland', slug: 'ireland', flag: '🇮🇪', iso2: 'ie', isActive: true }],
-  },
-  {
-    label: 'North America',
-    icon: '🇺🇸',
-    slug: 'north-america',
-    countries: NORTH_AMERICA_COUNTRIES,
-  },
-  {
-    label: 'Oceania',
-    icon: '🏝️',
-    slug: 'oceania',
-    countries: OCEANIA_COUNTRIES,
-  },
-  {
-    label: 'Asia',
-    icon: '🌏',
-    slug: 'asia',
-    countries: ASIA_COUNTRIES,
-  },
-  {
-    label: 'Middle East',
-    icon: '🕌',
-    slug: 'middle-east',
-    countries: MIDDLE_EAST_COUNTRIES,
-  },
+  NORTH_AMERICA_GROUP,
+  OCEANIA_GROUP,
+  ASIA_GROUP,
+  MIDDLE_EAST_GROUP,
 ];
 
 /**

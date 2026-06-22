@@ -17,22 +17,20 @@ export class Header {
 
   private readonly allCountries = REGION_GROUPS.flatMap((g) => g.countries);
 
-  activeCountry = 'Germany';
-  activeIso2 = 'de';
+  /** Only set when the active route is actually a /country/:slug page — null elsewhere (dashboard, find, etc). */
+  activeCountry: string | null = null;
+  activeIso2: string | null = null;
 
   constructor() {
     this.router.events
       .pipe(
         filter((e): e is NavigationEnd => e instanceof NavigationEnd),
-        map((e) => {
-          const match = e.urlAfterRedirects.match(/\/country\/(.+)/);
-          return match ? match[1] : 'germany';
-        })
+        map((e) => e.urlAfterRedirects.match(/\/country\/(.+)/)?.[1] ?? null)
       )
       .subscribe((slug) => {
-        const found = this.allCountries.find((c) => c.slug === slug);
-        this.activeCountry = found?.name || 'Germany';
-        this.activeIso2 = found?.iso2 || 'de';
+        const found = slug ? this.allCountries.find((c) => c.slug === slug) : null;
+        this.activeCountry = found?.name ?? null;
+        this.activeIso2 = found?.iso2 ?? null;
       });
   }
 }

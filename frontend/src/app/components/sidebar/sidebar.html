@@ -51,19 +51,51 @@
       <div class="sidebar-section-label">Countries</div>
     }
 
-    <!-- ── Country Region Groups ── -->
-    @for (group of regionGroups; track group.slug) {
+    <!-- ── Country Region Tree (recursive: handles Europe → Schengen/UK/Ireland nesting) ── -->
+    <ng-template #nodeTpl let-node="node" let-depth="depth">
+      @if (node.children) {
+        <!-- Parent node (e.g. Europe) → collapsible, contains nested sub-groups -->
+        <div class="nav-group">
+          <button class="nav-group-header"
+                  [class.nav-group-header-l2]="depth > 0"
+                  (click)="toggleGroup(node.slug)"
+                  [matTooltip]="isCollapsed ? node.label : ''"
+                  matTooltipPosition="right">
+            @if (node.iso2) {
+              <app-flag-icon class="nav-flag" [code]="node.iso2" [size]="20" />
+            } @else if (node.materialIcon) {
+              <span class="region-badge"><mat-icon>{{ node.materialIcon }}</mat-icon></span>
+            } @else {
+              <span class="nav-flag">{{ node.icon }}</span>
+            }
+            @if (!isCollapsed) {
+              <span class="nav-group-label">{{ node.label }}</span>
+              <mat-icon class="nav-group-arrow" [class.expanded]="isGroupExpanded(node.slug)">
+                expand_more
+              </mat-icon>
+            }
+          </button>
 
-      @if (isSingleCountryGroup(group)) {
+          @if (isGroupExpanded(node.slug)) {
+            <div class="nav-group-items nested-l2" [class.collapsed-items]="isCollapsed">
+              @for (child of node.children; track child.slug) {
+                <ng-container *ngTemplateOutlet="nodeTpl; context: { node: child, depth: depth + 1 }" />
+              }
+            </div>
+          }
+        </div>
+
+      } @else if (isSingleCountryGroup(node)) {
         <!-- Single country → direct link -->
         <a class="nav-item"
-           [routerLink]="['/country', group.countries[0].slug]"
+           [class.nav-subitem]="depth > 0"
+           [routerLink]="['/country', node.countries[0].slug]"
            routerLinkActive="active"
-           [matTooltip]="isCollapsed ? group.label : ''"
+           [matTooltip]="isCollapsed ? node.label : ''"
            matTooltipPosition="right">
-          <app-flag-icon class="nav-flag" [code]="group.countries[0].iso2" [size]="20" />
+          <app-flag-icon class="nav-flag" [code]="node.countries[0].iso2" [size]="20" />
           @if (!isCollapsed) {
-            <span class="nav-label">{{ group.label }}</span>
+            <span class="nav-label">{{ node.label }}</span>
           }
         </a>
 
@@ -71,21 +103,26 @@
         <!-- Multi-country → collapsible group -->
         <div class="nav-group">
           <button class="nav-group-header"
-                  (click)="toggleGroup(group.slug)"
-                  [matTooltip]="isCollapsed ? group.label : ''"
+                  [class.nav-group-header-l2]="depth > 0"
+                  (click)="toggleGroup(node.slug)"
+                  [matTooltip]="isCollapsed ? node.label : ''"
                   matTooltipPosition="right">
-            <span class="nav-flag">{{ group.icon }}</span>
+            @if (node.iso2) {
+              <app-flag-icon class="nav-flag" [code]="node.iso2" [size]="20" />
+            } @else {
+              <span class="nav-flag">{{ node.icon }}</span>
+            }
             @if (!isCollapsed) {
-              <span class="nav-group-label">{{ group.label }}</span>
-              <mat-icon class="nav-group-arrow" [class.expanded]="isGroupExpanded(group.slug)">
+              <span class="nav-group-label">{{ node.label }}</span>
+              <mat-icon class="nav-group-arrow" [class.expanded]="isGroupExpanded(node.slug)">
                 expand_more
               </mat-icon>
             }
           </button>
 
-          @if (isGroupExpanded(group.slug)) {
+          @if (isGroupExpanded(node.slug)) {
             <div class="nav-group-items" [class.collapsed-items]="isCollapsed">
-              @for (country of group.countries; track country.slug) {
+              @for (country of node.countries; track country.slug) {
                 <a class="nav-item nav-subitem"
                    [class.nav-subitem-collapsed]="isCollapsed"
                    [routerLink]="['/country', country.slug]"
@@ -102,6 +139,10 @@
           }
         </div>
       }
+    </ng-template>
+
+    @for (node of sidebarTree; track node.slug) {
+      <ng-container *ngTemplateOutlet="nodeTpl; context: { node: node, depth: 0 }" />
     }
   </nav>
 
