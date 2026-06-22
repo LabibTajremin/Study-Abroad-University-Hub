@@ -32,6 +32,11 @@ export class Filter implements OnInit, OnChanges {
   stateSearch = '';
   filteredCities: string[] = [];
   filteredStates: string[] = [];
+  showAdvanced = false;
+
+  toggleAdvanced(): void {
+    this.showAdvanced = !this.showAdvanced;
+  }
 
   constructor(private fb: FormBuilder) {}
 

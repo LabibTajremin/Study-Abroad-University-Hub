@@ -19,12 +19,139 @@
 .hero-sub {
   font-size: 16px;
   color: rgba(255, 255, 255, 0.85);
-  margin: 0;
+  margin: 0 0 18px;
   line-height: 1.6;
+}
+
+.trust-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-pill);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  backdrop-filter: blur(4px);
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .section {
   padding: 28px 32px;
+}
+
+// ── Find layout: form + side info panel ──
+.find-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 860px) minmax(260px, 340px);
+  gap: 24px;
+  align-items: start;
+  max-width: 1220px;
+  margin: 0 auto;
+}
+
+.how-it-works {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-xl);
+  padding: 24px 22px;
+  position: sticky;
+  top: 24px;
+}
+
+.how-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 0 0 18px;
+
+  mat-icon {
+    color: #3B82F6;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.how-steps {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  li {
+    display: flex;
+    gap: 12px;
+  }
+
+  strong {
+    display: block;
+    font-size: 13.5px;
+    color: #1E293B;
+    margin-bottom: 2px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 12.5px;
+    color: #64748B;
+    line-height: 1.5;
+  }
+}
+
+.step-num {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #3B82F6;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.how-note {
+  display: flex;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px dashed #E2E8F0;
+
+  mat-icon {
+    flex-shrink: 0;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #94A3B8;
+    margin-top: 1px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 11.5px;
+    color: #94A3B8;
+    line-height: 1.5;
+  }
 }
 
 // ── Profile banner (after submission) ──
@@ -66,25 +193,30 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 16px;
+  padding: 8px 18px;
   background: #fff;
   color: #2563EB;
   border: 1px solid #BFDBFE;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
-  transition: background 0.15s;
 
   mat-icon {
     font-size: 16px;
     width: 16px;
     height: 16px;
+    transition: transform 0.2s var(--ease-standard);
   }
 
   &:hover {
     background: #DBEAFE;
+    box-shadow: var(--shadow-sm);
+
+    mat-icon {
+      transform: rotate(-15deg);
+    }
   }
 }
 
@@ -182,9 +314,23 @@
   color: #CBD5E1;
 }
 
+@media (max-width: 1100px) {
+  .find-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .how-it-works {
+    position: static;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+}
+
 @media (max-width: 640px) {
   .hero { padding: 32px 16px; }
   .hero-title { font-size: 24px; }
+  .trust-pills { gap: 8px; }
+  .trust-pill { font-size: 11.5px; padding: 5px 11px; }
   .section { padding: 20px 16px; }
   .cards-grid { grid-template-columns: 1fr; }
 }

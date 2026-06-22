@@ -8,13 +8,54 @@
       Enter your academic profile below and we'll match you with universities
       across {{ totalScanned || '1,000+' }} programs in 40+ countries — ranked by your eligibility.
     </p>
+    <div class="trust-pills">
+      <span class="trust-pill"><mat-icon>bolt</mat-icon> Instant results</span>
+      <span class="trust-pill"><mat-icon>lock_open</mat-icon> No signup required</span>
+      <span class="trust-pill"><mat-icon>volunteer_activism</mat-icon> 100% free</span>
+    </div>
   </div>
 </div>
 
 <!-- Profile Form or Edit Banner -->
 <div class="section">
   @if (!profileSubmitted) {
-    <app-student-profile-form (profileSubmitted)="onProfileSubmitted($event)" />
+    <div class="find-layout">
+      <app-student-profile-form (profileSubmitted)="onProfileSubmitted($event)" />
+
+      <aside class="how-it-works">
+        <h3 class="how-title">
+          <mat-icon>auto_awesome</mat-icon>
+          How matching works
+        </h3>
+        <ol class="how-steps">
+          <li>
+            <span class="step-num">1</span>
+            <div>
+              <strong>Tell us your profile</strong>
+              <p>GPA, IELTS score and the budget you can realistically spend per year.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <div>
+              <strong>We scan every country</strong>
+              <p>All universities across our entire catalog are checked against your numbers.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <div>
+              <strong>Get a ranked shortlist</strong>
+              <p>Matches are scored on eligibility, affordability and admission difficulty.</p>
+            </div>
+          </li>
+        </ol>
+        <div class="how-note">
+          <mat-icon>info</mat-icon>
+          <p>Universities without published eligibility data are still shown — they're not excluded, just scored neutrally.</p>
+        </div>
+      </aside>
+    </div>
   } @else {
     <!-- Profile summary banner -->
     @if (currentProfile) {
@@ -31,7 +72,7 @@
             <strong>up to ${{ currentProfile.budgetMax | number }}/yr</strong>
           </span>
         </div>
-        <button class="edit-btn" (click)="editProfile()">
+        <button class="edit-btn btn-motion" (click)="editProfile()">
           <mat-icon>edit</mat-icon> Edit Profile
         </button>
       </div>
@@ -59,7 +100,7 @@
         <mat-icon class="empty-icon">search_off</mat-icon>
         <h3>No matching universities found</h3>
         <p>Try increasing your budget or adjusting your profile — many universities don't have eligibility data yet and will surface as we add more.</p>
-        <button class="edit-btn" (click)="editProfile()">
+        <button class="edit-btn btn-motion" (click)="editProfile()">
           <mat-icon>tune</mat-icon> Adjust Profile
         </button>
       </div>

@@ -23,6 +23,55 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 // ════════════════════════════════════════════════════════════
+// Design tokens — shared radius / shadow / motion scale.
+// Use these instead of one-off pixel values so new components
+// stay visually consistent with the rest of the app.
+// ════════════════════════════════════════════════════════════
+:root {
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+
+  --shadow-xs: 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 6px 20px rgba(15, 23, 42, 0.12);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.16);
+
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ── Shared button motion ──
+// Opt in with .btn-motion alongside a component's own background/color
+// rules. Hover: lift + deepen shadow. Active: settle + compress (tactile
+// press). Respects prefers-reduced-motion for accessibility.
+.btn-motion {
+  transition:
+    transform 0.18s var(--ease-standard),
+    box-shadow 0.18s var(--ease-standard),
+    background-color 0.18s var(--ease-standard),
+    border-color 0.18s var(--ease-standard),
+    color 0.18s var(--ease-standard);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.97);
+    transition-duration: 0.08s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+// ════════════════════════════════════════════════════════════
 // BMA-style dropdown panel — Global Styles
 //
 // panelClass adds .bma-panel to the CDK overlay panel.

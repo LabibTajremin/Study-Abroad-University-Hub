@@ -56,17 +56,27 @@
   align-items: center;
   gap: 8px;
   padding: 11px 22px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.18s;
 
   mat-icon {
     font-size: 20px;
     width: 20px;
     height: 20px;
   }
+}
+
+.btn-arrow {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  margin-left: -2px;
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  transition: opacity 0.2s var(--ease-standard), max-width 0.2s var(--ease-standard), margin 0.2s var(--ease-standard);
 }
 
 .btn-primary {
@@ -76,8 +86,14 @@
 
   &:hover {
     background: #EFF6FF;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+
+    .btn-arrow {
+      opacity: 1;
+      max-width: 20px;
+      margin-left: 0;
+    }
   }
 }
 
@@ -89,7 +105,7 @@
 
   &:hover {
     background: rgba(255,255,255,0.2);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
   }
 }
 
@@ -123,7 +139,7 @@
 }
 
 .stat-value {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 800;
   color: #0F172A;
   line-height: 1;
@@ -180,15 +196,20 @@
   padding: 16px 18px;
   background: #fff;
   border: 1px solid #E2E8F0;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   text-decoration: none;
-  transition: all 0.18s ease;
+  transition: border-color 0.18s var(--ease-standard), box-shadow 0.18s var(--ease-standard), transform 0.18s var(--ease-standard);
   cursor: pointer;
 
   &:hover {
     border-color: #93C5FD;
-    box-shadow: 0 2px 12px rgba(59, 130, 246, 0.1);
-    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.99);
+    transition-duration: 0.08s;
   }
 }
 
@@ -256,10 +277,10 @@
   padding: 8px 14px;
   background: #F8FAFC;
   border: 1px solid #E2E8F0;
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
   font-size: 13px;
   color: #334155;
-  transition: all 0.15s;
+  transition: background-color 0.15s var(--ease-standard), border-color 0.15s var(--ease-standard), color 0.15s var(--ease-standard), transform 0.15s var(--ease-standard), box-shadow 0.15s var(--ease-standard);
 
   &.clickable {
     cursor: pointer;
@@ -268,6 +289,13 @@
       background: #EFF6FF;
       border-color: #93C5FD;
       color: #1D4ED8;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.97);
+      transition-duration: 0.08s;
     }
   }
 }

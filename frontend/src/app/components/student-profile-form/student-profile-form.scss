@@ -118,17 +118,16 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 32px;
+  padding: 13px 30px;
   background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
   color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   font-size: 15px;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
   align-self: flex-start;
-  transition: box-shadow 0.2s, transform 0.1s;
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
 
   mat-icon {
@@ -137,13 +136,25 @@
     height: 20px;
   }
 
-  &:hover {
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.45);
-    transform: translateY(-1px);
+  .submit-arrow {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    margin-left: -4px;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    transition: opacity 0.2s var(--ease-standard), max-width 0.2s var(--ease-standard), margin 0.2s var(--ease-standard);
   }
 
-  &:active {
-    transform: scale(0.98);
+  &:hover {
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+
+    .submit-arrow {
+      opacity: 1;
+      max-width: 20px;
+      margin-left: 0;
+    }
   }
 }
 

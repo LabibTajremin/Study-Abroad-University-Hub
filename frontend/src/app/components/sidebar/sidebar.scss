@@ -99,12 +99,21 @@ $sidebar-collapsed: 64px;
 
   &:hover {
     color: $sidebar-text;
+
+    mat-icon {
+      transform: scale(1.2);
+    }
+  }
+
+  &:active mat-icon {
+    transform: scale(0.9);
   }
 
   mat-icon {
     font-size: 18px;
     width: 18px;
     height: 18px;
+    transition: transform 0.18s var(--ease-standard);
   }
 }
 
@@ -312,13 +321,17 @@ $sidebar-collapsed: 64px;
   font-weight: 500;
   width: 100%;
   text-align: left;
-  transition: all 0.18s ease;
+  transition: background-color 0.18s var(--ease-standard), color 0.18s var(--ease-standard), transform 0.1s var(--ease-standard);
   white-space: nowrap;
   border-left: 3px solid transparent;
 
   &:hover {
     background: $sidebar-hover;
     color: #fff;
+  }
+
+  &:active {
+    transform: scale(0.98);
   }
 }
 

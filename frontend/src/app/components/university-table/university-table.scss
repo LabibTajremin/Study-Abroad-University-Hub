@@ -25,15 +25,14 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 16px;
-  border-radius: 8px;
+  padding: 8px 18px;
+  border-radius: var(--radius-md);
   border: 1px solid #2563EB;
   background: #EFF6FF;
   color: #2563EB;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, box-shadow 0.15s;
   white-space: nowrap;
   flex-shrink: 0;
 
@@ -41,12 +40,17 @@
     font-size: 18px;
     width: 18px;
     height: 18px;
+    transition: transform 0.2s var(--ease-standard);
   }
 
   &:hover {
     background: #2563EB;
     color: #fff;
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+    box-shadow: var(--shadow-md);
+
+    mat-icon {
+      transform: translateY(2px);
+    }
   }
 
   &:active {
@@ -56,12 +60,12 @@
 }
 
 .table-wrapper {
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   overflow-x: auto;
   overflow-y: auto;
   max-height: 720px;
   border: 1px solid #E2E8F0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-xs);
 
   // Sticky header — softer slate instead of full dark
   th.mat-mdc-header-cell {
@@ -70,10 +74,17 @@
     z-index: 10;
     background: #1E293B;
     color: #E2E8F0;
-    font-weight: 500;
-    font-size: 12px;
-    letter-spacing: 0.3px;
+    font-weight: 600;
+    font-size: 12.5px;
+    letter-spacing: 0.4px;
     border-bottom: 2px solid #3B82F6;
+    padding: 14px 18px !important;
+    white-space: nowrap;
+  }
+
+  td.mat-mdc-cell {
+    padding: 16px 18px !important;
+    border-bottom-color: #F1F5F9;
   }
 
   // Slim scrollbar
@@ -152,15 +163,16 @@ table {
 
 // ── University name ──
 .uni-name {
-  font-weight: 500;
+  font-weight: 600;
   color: #0F172A;
-  font-size: 14px;
+  font-size: 14.5px;
 }
 
 .uni-link {
   color: #2563EB;
   text-decoration: none;
   display: block;
+  transition: color 0.15s var(--ease-standard);
 
   &:hover {
     text-decoration: underline;
@@ -307,6 +319,16 @@ table {
 // ── Website link ──
 .website-link {
   color: #2563EB;
+  transition: transform 0.18s var(--ease-standard), color 0.18s var(--ease-standard);
+
+  &:hover {
+    transform: scale(1.15) rotate(8deg);
+    color: #1D4ED8;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 // ── No results ──

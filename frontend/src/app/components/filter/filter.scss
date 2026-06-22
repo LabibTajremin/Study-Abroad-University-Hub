@@ -6,15 +6,15 @@
   margin: 20px 24px 12px;
   background: #fff;
   border: 1px solid #E2E8F0;
-  border-radius: 12px;
-  padding: 20px 22px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-xs);
 }
 
 .filter-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
 // ── Field Group (Label above + Input below) ──
@@ -51,9 +51,9 @@
   align-items: center;
   gap: 10px;
   border: 1px solid #E2E8F0;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 0 12px;
-  height: 42px;
+  height: 44px;
   background: #fff;
   transition: border-color 0.2s, box-shadow 0.2s;
 
@@ -85,7 +85,7 @@
   font-family: inherit;
   color: #333;
   background: transparent;
-  line-height: 42px;
+  line-height: 44px;
 
   &::placeholder {
     color: #bbb;
@@ -101,8 +101,8 @@
 .custom-select-wrapper {
   position: relative;
   border: 1px solid #E2E8F0;
-  border-radius: 8px;
-  height: 42px;
+  border-radius: var(--radius-md);
+  height: 44px;
   display: flex;
   align-items: center;
   padding: 0 12px;
@@ -128,7 +128,7 @@
     }
     .mat-mdc-select-trigger {
       padding: 0;
-      height: 42px;
+      height: 44px;
     }
     .mat-mdc-select-value {
       max-width: calc(100% - 24px);
@@ -164,23 +164,19 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 9px 20px;
+  padding: 10px 22px;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   font-family: inherit;
-  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
 
   mat-icon {
     font-size: 18px;
     width: 18px;
     height: 18px;
-  }
-
-  &:active {
-    transform: scale(0.97);
+    transition: transform 0.2s var(--ease-standard);
   }
 }
 
@@ -191,7 +187,11 @@
 
   &:hover {
     background: #2563EB;
-    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+    box-shadow: var(--shadow-md);
+
+    mat-icon {
+      transform: scale(1.1);
+    }
   }
 }
 
@@ -202,13 +202,61 @@
 
   &:hover {
     background: #E2E8F0;
+
+    mat-icon {
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+// ── Advanced filters toggle ──
+.btn-advanced-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 8px 14px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-md);
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #94A3B8;
+  }
+
+  &:hover {
+    background: #EFF6FF;
+    border-color: #93C5FD;
+    color: #1D4ED8;
+  }
+}
+
+.toggle-arrow {
+  transition: transform 0.2s var(--ease-standard);
+
+  &.expanded {
+    transform: rotate(180deg);
   }
 }
 
 // ── Advanced Row ──
 .advanced-row {
-  padding-top: 4px;
+  padding-top: 16px;
   border-top: 1px dashed #E2E8F0;
+  animation: filterRowReveal 0.22s var(--ease-standard);
+}
+
+@keyframes filterRowReveal {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .checkbox-group {

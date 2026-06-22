@@ -59,17 +59,18 @@
 
   <!-- Footer actions -->
   <div class="card-footer">
-    <a class="btn-details"
+    <a class="btn-details btn-motion"
        [routerLink]="['/university', recommendation.university.id]"
        [queryParams]="{ country: recommendation.countrySlug }">
       <mat-icon>open_in_new</mat-icon>
       View Details
     </a>
     @if (recommendation.university.applicationUrl) {
-      <a class="btn-apply"
+      <a class="btn-apply btn-motion"
          [href]="recommendation.university.applicationUrl"
          target="_blank" rel="noopener">
         Apply Now
+        <mat-icon>arrow_forward</mat-icon>
       </a>
     }
   </div>

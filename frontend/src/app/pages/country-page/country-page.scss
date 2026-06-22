@@ -2,31 +2,34 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 24px 0;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #F1F5F9;
+  margin-bottom: 4px;
 }
 
 .page-header-left {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .country-flag {
-  font-size: 40px;
+  font-size: 42px;
   line-height: 1;
 }
 
 .page-title {
   margin: 0;
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 700;
   color: #0F172A;
+  letter-spacing: -0.3px;
 }
 
 .page-subtitle {
-  margin: 2px 0 0;
-  font-size: 13px;
-  color: #94A3B8;
+  margin: 3px 0 0;
+  font-size: 13.5px;
+  color: #64748B;
 }
 
 .error-container {
