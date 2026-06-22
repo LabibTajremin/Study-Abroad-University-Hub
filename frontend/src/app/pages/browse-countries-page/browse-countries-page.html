@@ -1,0 +1,39 @@
+<!-- Hero -->
+<div class="bc-hero">
+  <div class="bc-hero-content">
+    <h1 class="bc-title">Browse Countries</h1>
+    <p class="bc-sub">
+      Pick a region below, then a country, to see its full university list — costs,
+      requirements and scholarships included.
+    </p>
+  </div>
+</div>
+
+<!-- Region sections -->
+<div class="bc-content">
+  @for (section of sections; track section.slug) {
+    <section class="bc-section">
+      <h2 class="bc-section-heading">
+        @if (section.iso2) {
+          <app-flag-icon class="bc-section-flag" [code]="section.iso2" [size]="22" />
+        } @else if (section.materialIcon) {
+          <span class="bc-section-flag bc-section-flag-badge"><mat-icon>{{ section.materialIcon }}</mat-icon></span>
+        } @else {
+          <span class="bc-section-flag">{{ section.icon }}</span>
+        }
+        {{ section.label }}
+        <span class="bc-section-count">{{ section.countries?.length }} {{ section.countries?.length === 1 ? 'country' : 'countries' }}</span>
+      </h2>
+
+      <div class="bc-grid">
+        @for (country of section.countries; track country.slug) {
+          <a class="bc-card" [routerLink]="['/country', country.slug]">
+            <app-flag-icon class="bc-card-flag" [code]="country.iso2" [size]="28" />
+            <span class="bc-card-name">{{ country.name }}</span>
+            <mat-icon class="bc-card-arrow">chevron_right</mat-icon>
+          </a>
+        }
+      </div>
+    </section>
+  }
+</div>

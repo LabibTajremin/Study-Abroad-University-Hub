@@ -17,6 +17,15 @@ export const routes: Routes = [
       import('./pages/home-page/home-page').then((m) => m.HomePage),
   },
 
+  // ── Browse all countries, grouped by region ──
+  {
+    path: 'browse-countries',
+    loadComponent: () =>
+      import('./pages/browse-countries-page/browse-countries-page').then(
+        (m) => m.BrowseCountriesPage
+      ),
+  },
+
   // ── University Detail ──
   {
     path: 'university/:id',
