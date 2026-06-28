@@ -28,6 +28,11 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
+# Environment variables (admin credentials, GitHub token, JWT secret)
+.env
+.env.local
+.env*.local
+
 # Miscellaneous
 /.angular/cache
 .sass-cache/
