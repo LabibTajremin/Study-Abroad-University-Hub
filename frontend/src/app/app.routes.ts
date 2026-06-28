@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { CountryPage } from './pages/country-page/country-page';
 
 export const routes: Routes = [
   // ── Dashboard (default landing) ──
@@ -41,12 +40,16 @@ export const routes: Routes = [
       import('./pages/admin-page/admin-page').then((m) => m.AdminPage),
   },
 
-  // ── Country page — single dynamic route. CountryPage looks up the slug
-  //    against the runtime country config and shows a "Coming Soon" state
-  //    for any slug that isn't registered, instead of a hardcoded route per
-  //    country. This is what lets the admin tool add a brand-new country
-  //    without needing a source/rebuild change for routing. ──
-  { path: 'country/:country', component: CountryPage },
+  // ── Country page — single dynamic route, lazy-loaded (it pulls in the
+  //    xlsx library for Excel export, which would otherwise bloat the main
+  //    bundle). CountryPage looks up the slug against the runtime country
+  //    config and shows a "Coming Soon" state for any slug that isn't
+  //    registered, instead of a hardcoded route per country. ──
+  {
+    path: 'country/:country',
+    loadComponent: () =>
+      import('./pages/country-page/country-page').then((m) => m.CountryPage),
+  },
 
   // Fallback
   { path: '**', redirectTo: '' },

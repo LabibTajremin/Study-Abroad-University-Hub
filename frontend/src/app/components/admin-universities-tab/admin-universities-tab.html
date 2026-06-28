@@ -24,6 +24,32 @@
   </div>
 </div>
 
+<div class="uat-import-row">
+  <button type="button" class="btn-import btn-motion" (click)="downloadExcelTemplate()">
+    <mat-icon>description</mat-icon>
+    Download Excel template
+  </button>
+
+  <label class="btn-import btn-motion">
+    <mat-icon>upload_file</mat-icon>
+    {{ importing ? 'Importing…' : 'Upload Excel' }}
+    <input type="file" accept=".xlsx,.xls" hidden [disabled]="importing" (change)="onExcelFileSelected($event)">
+  </label>
+
+  <label class="btn-import btn-motion">
+    <mat-icon>upload_file</mat-icon>
+    {{ importing ? 'Importing…' : 'Upload JSON' }}
+    <input type="file" accept=".json" hidden [disabled]="importing" (change)="onJsonFileSelected($event)">
+  </label>
+</div>
+
+@if (importError) {
+  <div class="uat-error-banner">
+    <mat-icon>error</mat-icon>
+    <p>{{ importError }}</p>
+  </div>
+}
+
 @if (saveSuccess) {
   <div class="uat-success-banner">
     <mat-icon>check_circle</mat-icon>

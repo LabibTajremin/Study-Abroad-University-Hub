@@ -7,6 +7,7 @@ import { UniversityService } from '../../services/university';
 import { JsonExportService } from '../../services/json-export';
 import { CountryConfigService } from '../../services/country-config';
 import { AdminApiService } from '../../services/admin-api';
+import { UniversityImportExportService } from '../../services/university-import-export';
 import { Country } from '../../models/country.model';
 import { University } from '../../models/university.model';
 import { AdminUniversityForm } from '../admin-university-form/admin-university-form';
@@ -22,6 +23,7 @@ export class AdminUniversitiesTab implements OnInit {
   private readonly jsonExport = inject(JsonExportService);
   private readonly countryConfig = inject(CountryConfigService);
   private readonly adminApi = inject(AdminApiService);
+  private readonly importExport = inject(UniversityImportExportService);
 
   @Output() sessionExpired = new EventEmitter<void>();
 
@@ -34,6 +36,9 @@ export class AdminUniversitiesTab implements OnInit {
   saving = false;
   saveError = '';
   saveSuccess = '';
+
+  importError = '';
+  importing = false;
 
   showForm = false;
   isAddingNew = false;
@@ -139,5 +144,54 @@ export class AdminUniversitiesTab implements OnInit {
 
   downloadBackup(): void {
     this.jsonExport.download(`${this.selectedSlug}-universities.json`, this.universities);
+  }
+
+  downloadExcelTemplate(): void {
+    this.importExport.downloadTemplate(this.selectedSlug);
+  }
+
+  async onExcelFileSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+
+    this.importError = '';
+    this.importing = true;
+    const result = await this.importExport.parseExcelFile(file);
+    this.importing = false;
+
+    if ('error' in result) {
+      this.importError = result.error;
+      return;
+    }
+    this.confirmReplaceFromImport(result.universities, file.name);
+  }
+
+  async onJsonFileSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+
+    this.importError = '';
+    this.importing = true;
+    const result = await this.importExport.parseJsonFile(file);
+    this.importing = false;
+
+    if ('error' in result) {
+      this.importError = result.error;
+      return;
+    }
+    this.confirmReplaceFromImport(result.universities, file.name);
+  }
+
+  private confirmReplaceFromImport(universities: University[], fileName: string): void {
+    const ok = confirm(
+      `"${fileName}" contains ${universities.length} record(s). This will replace the current working list ` +
+      `for ${this.selectedCountryName} (${this.universities.length} record(s)). Click Save afterward to commit. Continue?`
+    );
+    if (!ok) return;
+    this.replaceAll(universities);
   }
 }
