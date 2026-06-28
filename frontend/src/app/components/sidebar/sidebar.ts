@@ -4,8 +4,8 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { filter } from 'rxjs/operators';
-import { SidebarNode, SIDEBAR_TREE } from '../../models/country.model';
-import { UniversityService } from '../../services/university';
+import { SidebarNode } from '../../models/country.model';
+import { CountryConfigService } from '../../services/country-config';
 import { FlagIcon } from '../flag-icon/flag-icon';
 
 @Component({
@@ -18,18 +18,24 @@ export class Sidebar implements OnInit {
   @Output() sidebarToggled = new EventEmitter<boolean>();
 
   private readonly router = inject(Router);
-  private readonly universityService = inject(UniversityService);
+  private readonly countryConfig = inject(CountryConfigService);
 
-  sidebarTree: SidebarNode[] = SIDEBAR_TREE;
+  sidebarTree: SidebarNode[] = [];
   isCollapsed = false;
-  countryCount = this.universityService.getAllCountrySlugs().length;
+  countryCount = 0;
 
   // All nodes collapsed by default to keep the nav compact; whichever
   // node (and its ancestors) contains the active route auto-expands.
   expandedGroups: Record<string, boolean> = {};
 
   ngOnInit(): void {
-    this.syncActiveGroup(this.router.url);
+    this.countryConfig.sidebarTree$.subscribe((tree) => {
+      this.sidebarTree = tree;
+      this.syncActiveGroup(this.router.url);
+    });
+    this.countryConfig.getAllCountrySlugs$().subscribe((slugs) => {
+      this.countryCount = slugs.length;
+    });
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe((e) => this.syncActiveGroup(e.urlAfterRedirects));

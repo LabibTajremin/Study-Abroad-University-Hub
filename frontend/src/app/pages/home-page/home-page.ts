@@ -55,8 +55,10 @@ export class HomePage implements OnInit {
       next: (all) => {
         this.totalScanned = all.length;
         const eligible = this.recommendationService.filterEligible(all, profile);
-        this.recommendations = this.recommendationService.scoreAndRank(eligible, profile);
-        this.loading = false;
+        this.recommendationService.scoreAndRank(eligible, profile).subscribe((ranked) => {
+          this.recommendations = ranked;
+          this.loading = false;
+        });
       },
       error: () => {
         this.error = 'Failed to load university data. Please try again.';

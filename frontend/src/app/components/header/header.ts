@@ -4,8 +4,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { filter, map } from 'rxjs';
-import { REGION_GROUPS } from '../../models/country.model';
+import { filter, map, switchMap } from 'rxjs';
+import { CountryConfigService } from '../../services/country-config';
 import { FlagIcon } from '../flag-icon/flag-icon';
 import { ThemeService } from '../../services/theme';
 
@@ -17,9 +17,8 @@ import { ThemeService } from '../../services/theme';
 })
 export class Header {
   private readonly router = inject(Router);
+  private readonly countryConfig = inject(CountryConfigService);
   readonly themeService = inject(ThemeService);
-
-  private readonly allCountries = REGION_GROUPS.flatMap((g) => g.countries);
 
   /** Only set when the active route is actually a /country/:slug page — null elsewhere (dashboard, find, etc). */
   activeCountry: string | null = null;
@@ -29,10 +28,10 @@ export class Header {
     this.router.events
       .pipe(
         filter((e): e is NavigationEnd => e instanceof NavigationEnd),
-        map((e) => e.urlAfterRedirects.match(/\/country\/(.+)/)?.[1] ?? null)
+        map((e) => e.urlAfterRedirects.match(/\/country\/(.+)/)?.[1] ?? null),
+        switchMap((slug) => (slug ? this.countryConfig.findCountry$(slug) : [null]))
       )
-      .subscribe((slug) => {
-        const found = slug ? this.allCountries.find((c) => c.slug === slug) : null;
+      .subscribe((found) => {
         this.activeCountry = found?.name ?? null;
         this.activeIso2 = found?.iso2 ?? null;
       });

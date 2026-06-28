@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { REGION_GROUPS } from '../../models/country.model';
+import { CountryConfigService } from '../../services/country-config';
 import { JsonExportService } from '../../services/json-export';
 
 @Component({
@@ -11,19 +11,29 @@ import { JsonExportService } from '../../services/json-export';
   templateUrl: './admin-add-country-tab.html',
   styleUrl: './admin-add-country-tab.scss',
 })
-export class AdminAddCountryTab {
+export class AdminAddCountryTab implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly jsonExport = inject(JsonExportService);
+  private readonly countryConfig = inject(CountryConfigService);
 
-  existingGroups = REGION_GROUPS.map((g) => ({ slug: g.slug, label: g.label }));
+  existingGroups: { slug: string; label: string }[] = [];
 
   form: FormGroup = this.fb.group({
     name: ['', Validators.required],
     slug: ['', Validators.required],
     iso2: ['', Validators.required],
-    targetGroupSlug: [this.existingGroups[0]?.slug ?? '', Validators.required],
+    targetGroupSlug: ['', Validators.required],
     accentColor: ['#3B82F6', Validators.required],
   });
+
+  ngOnInit(): void {
+    this.countryConfig.regionGroups$.subscribe((groups) => {
+      this.existingGroups = groups.map((g) => ({ slug: g.slug, label: g.label }));
+      if (this.existingGroups.length) {
+        this.form.get('targetGroupSlug')?.setValue(this.existingGroups[0].slug);
+      }
+    });
+  }
 
   snippet = '';
 

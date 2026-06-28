@@ -7,8 +7,10 @@ import { Filter } from '../../components/filter/filter';
 import { UniversityTable } from '../../components/university-table/university-table';
 import { LoadingSpinner } from '../../components/loading-spinner/loading-spinner';
 import { FlagIcon } from '../../components/flag-icon/flag-icon';
+import { ComingSoon } from '../coming-soon/coming-soon';
 import { UniversityService } from '../../services/university';
-import { REGION_GROUPS, Country, COUNTRY_THEMES } from '../../models/country.model';
+import { CountryConfigService } from '../../services/country-config';
+import { Country } from '../../models/country.model';
 import {
   University,
   UniversityFilters,
@@ -19,12 +21,13 @@ import {
 
 @Component({
   selector: 'app-country-page',
-  imports: [CommonModule, MatIconModule, Filter, UniversityTable, LoadingSpinner, FlagIcon],
+  imports: [CommonModule, MatIconModule, Filter, UniversityTable, LoadingSpinner, FlagIcon, ComingSoon],
   templateUrl: './country-page.html',
   styleUrl: './country-page.scss',
 })
 export class CountryPage implements OnInit, OnDestroy {
   private readonly universityService = inject(UniversityService);
+  private readonly countryConfig = inject(CountryConfigService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private routeSub!: Subscription;
@@ -32,12 +35,15 @@ export class CountryPage implements OnInit, OnDestroy {
   // Country info
   countrySlug = '';  // empty so first load always triggers
   countryInfo: Country | null = null;
+  /** True once we've confirmed this slug isn't a registered country — shows the Coming Soon state instead of attempting to load data. */
+  notFound = false;
+  private accentColorValue = '#3B82F6';
 
   /** Sets --country-accent on the host element so child components (table, filter)
    *  can pick up the per-country theme color via CSS variable inheritance. */
   @HostBinding('style.--country-accent')
   get accentColor(): string {
-    return COUNTRY_THEMES[this.countrySlug] || '#3B82F6';
+    return this.accentColorValue;
   }
 
   allUniversities: University[] = [];
@@ -75,9 +81,17 @@ export class CountryPage implements OnInit, OnDestroy {
       const slug = segments.length > 0 ? segments[segments.length - 1].path : 'germany';
       if (slug !== this.countrySlug) {
         this.countrySlug = slug;
-        this.countryInfo = REGION_GROUPS.flatMap((g) => g.countries).find((c) => c.slug === slug) || null;
-        this.currentFilters.country = this.countryInfo?.name || 'Germany';
-        this.loadData();
+        this.countryConfig.findCountry$(slug).subscribe((found) => {
+          this.countryInfo = found;
+          this.notFound = found === null;
+          this.currentFilters.country = found?.name || 'Germany';
+          if (found) {
+            this.loadData();
+          }
+        });
+        this.countryConfig.getTheme$(slug).subscribe((color) => {
+          this.accentColorValue = color;
+        });
       }
     });
   }

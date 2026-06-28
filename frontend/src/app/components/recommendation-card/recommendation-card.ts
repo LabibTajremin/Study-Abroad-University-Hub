@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UniversityRecommendation } from '../../models/university.model';
-import { REGION_GROUPS } from '../../models/country.model';
+import { CountryConfigService } from '../../services/country-config';
 import { FlagIcon } from '../flag-icon/flag-icon';
 
 @Component({
@@ -13,16 +13,18 @@ import { FlagIcon } from '../flag-icon/flag-icon';
   templateUrl: './recommendation-card.html',
   styleUrl: './recommendation-card.scss',
 })
-export class RecommendationCard {
+export class RecommendationCard implements OnInit {
+  private readonly countryConfig = inject(CountryConfigService);
+
   @Input() recommendation!: UniversityRecommendation;
   @Input() rank = 1;
 
-  private readonly iso2Map = Object.fromEntries(
-    REGION_GROUPS.flatMap((g) => g.countries.map((c) => [c.slug, c.iso2]))
-  );
+  flagIso2 = '';
 
-  get flagIso2(): string {
-    return this.iso2Map[this.recommendation.countrySlug] ?? '';
+  ngOnInit(): void {
+    this.countryConfig.findCountry$(this.recommendation.countrySlug).subscribe((country) => {
+      this.flagIso2 = country?.iso2 ?? '';
+    });
   }
 
   get difficultyLabel(): string {

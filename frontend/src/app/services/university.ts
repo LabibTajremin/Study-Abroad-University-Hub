@@ -9,59 +9,12 @@ import {
   SortState,
 } from '../models/university.model';
 import { environment } from '../../environments/environment';
+import { CountryConfigService } from './country-config';
 
 @Injectable({ providedIn: 'root' })
 export class UniversityService {
   private readonly http = inject(HttpClient);
-
-  // Country → JSON file mapping
-  // TODO: Switch to backend API when ready (e.g. /api/universities?country=germany)
-  private readonly countryDataUrls: Record<string, string> = {
-    germany: 'data/universities.json',
-    spain: 'data/spain-universities.json',
-    italy: 'data/italy-universities.json',
-    sweden: 'data/sweden-universities.json',
-    france: 'data/france-universities.json',
-    hungary: 'data/hungary-universities.json',
-    malta: 'data/malta-universities.json',
-    denmark: 'data/denmark-universities.json',
-    finland: 'data/finland-universities.json',
-    netherlands: 'data/netherlands-universities.json',
-    austria: 'data/austria-universities.json',
-    'czech-republic': 'data/czech-republic-universities.json',
-    norway: 'data/norway-universities.json',
-    switzerland: 'data/switzerland-universities.json',
-    portugal: 'data/portugal-universities.json',
-    belgium: 'data/belgium-universities.json',
-    poland: 'data/poland-universities.json',
-    greece: 'data/greece-universities.json',
-    croatia: 'data/croatia-universities.json',
-    romania: 'data/romania-universities.json',
-    bulgaria: 'data/bulgaria-universities.json',
-    slovakia: 'data/slovakia-universities.json',
-    slovenia: 'data/slovenia-universities.json',
-    estonia: 'data/estonia-universities.json',
-    latvia: 'data/latvia-universities.json',
-    lithuania: 'data/lithuania-universities.json',
-    iceland: 'data/iceland-universities.json',
-    liechtenstein: 'data/liechtenstein-universities.json',
-    luxembourg: 'data/luxembourg-universities.json',
-    uk: 'data/uk-universities.json',
-    wales: 'data/wales-universities.json',
-    ireland: 'data/ireland-universities.json',
-    usa: 'data/usa-universities.json',
-    australia: 'data/australia-universities.json',
-    'new-zealand': 'data/new-zealand-universities.json',
-    malaysia: 'data/malaysia-universities.json',
-    japan: 'data/japan-universities.json',
-    'south-korea': 'data/south-korea-universities.json',
-    canada: 'data/canada-universities.json',
-    singapore: 'data/singapore-universities.json',
-    uae: 'data/uae-universities.json',
-    india: 'data/india-universities.json',
-    turkey: 'data/turkey-universities.json',
-    china: 'data/china-universities.json',
-  };
+  private readonly countryConfig = inject(CountryConfigService);
 
   private readonly loadingSubject = new BehaviorSubject<boolean>(false);
   readonly loading$ = this.loadingSubject.asObservable();
@@ -73,7 +26,10 @@ export class UniversityService {
   private cache = new Map<string, University[]>();
 
   /**
-   * Fetch universities for a specific country.
+   * Fetch universities for a specific country. The data file path is derived
+   * directly from the slug (data/<slug>-universities.json) — every country's
+   * data file follows this exact naming convention, which is what lets the
+   * admin tool add a brand-new country without any source/rebuild changes.
    */
   fetchUniversities(country: string = 'germany'): Observable<University[]> {
     const cached = this.cache.get(country);
@@ -81,11 +37,7 @@ export class UniversityService {
       return of(cached);
     }
 
-    const path = this.countryDataUrls[country];
-    if (!path) {
-      this.errorSubject.next(`No data available for ${country}`);
-      return of([]);
-    }
+    const path = `data/${country}-universities.json`;
     const url = environment.apiBaseUrl ? `${environment.apiBaseUrl}/${path}` : path;
 
     this.loadingSubject.next(true);
@@ -204,11 +156,11 @@ export class UniversityService {
     }
   }
 
-  isCountryAvailable(slug: string): boolean {
-    return slug in this.countryDataUrls;
+  isCountryAvailable$(slug: string): Observable<boolean> {
+    return this.countryConfig.isCountryAvailable$(slug);
   }
 
-  getAllCountrySlugs(): string[] {
-    return Object.keys(this.countryDataUrls);
+  getAllCountrySlugs$(): Observable<string[]> {
+    return this.countryConfig.getAllCountrySlugs$();
   }
 }

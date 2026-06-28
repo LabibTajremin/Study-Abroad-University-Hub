@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { UniversityService } from '../../services/university';
 import { RecommendationService } from '../../services/recommendation';
-import { REGION_GROUPS } from '../../models/country.model';
+import { CountryConfigService } from '../../services/country-config';
 import { FlagIcon } from '../../components/flag-icon/flag-icon';
 
 interface StatCard {
@@ -40,12 +40,13 @@ interface RegionStat {
 export class DashboardPage implements OnInit {
   private readonly universityService = inject(UniversityService);
   private readonly recommendationService = inject(RecommendationService);
+  private readonly countryConfig = inject(CountryConfigService);
   private readonly router = inject(Router);
 
   stats: StatCard[] = [
     { icon: 'school',     value: '...',  label: 'Universities',      color: '#3B82F6' },
-    { icon: 'public',     value: String(this.universityService.getAllCountrySlugs().length), label: 'Countries', color: '#10B981' },
-    { icon: 'map',        value: String(REGION_GROUPS.length),    label: 'Regions',           color: '#8B5CF6' },
+    { icon: 'public',     value: '...',  label: 'Countries',         color: '#10B981' },
+    { icon: 'map',        value: '...',  label: 'Regions',           color: '#8B5CF6' },
     { icon: 'payments',   value: 'Free',  label: 'Min Tuition',       color: '#F59E0B' },
   ];
 
@@ -101,16 +102,25 @@ export class DashboardPage implements OnInit {
     },
   ];
 
-  regionStats: RegionStat[] = REGION_GROUPS.map((g) => ({
-    flag: g.icon,
-    iso2: g.iso2,
-    materialIcon: g.materialIcon,
-    label: g.label,
-    count: g.countries.length,
-    slug: g.countries.length === 1 ? g.countries[0].slug : '',
-  }));
+  regionStats: RegionStat[] = [];
 
   ngOnInit(): void {
+    this.countryConfig.regionGroups$.subscribe((groups) => {
+      this.regionStats = groups.map((g) => ({
+        flag: g.icon,
+        iso2: g.iso2,
+        materialIcon: g.materialIcon,
+        label: g.label,
+        count: g.countries.length,
+        slug: g.countries.length === 1 ? g.countries[0].slug : '',
+      }));
+      this.stats[2].value = String(groups.length);
+    });
+
+    this.universityService.getAllCountrySlugs$().subscribe((slugs) => {
+      this.stats[1].value = String(slugs.length);
+    });
+
     this.recommendationService.loadAllCountries().subscribe((unis) => {
       const rounded = Math.floor(unis.length / 100) * 100;
       this.stats[0].value = `${rounded}+`;

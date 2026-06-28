@@ -5,7 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UniversityService } from '../../services/university';
 import { JsonExportService } from '../../services/json-export';
-import { REGION_GROUPS, Country } from '../../models/country.model';
+import { CountryConfigService } from '../../services/country-config';
+import { Country } from '../../models/country.model';
 import { University } from '../../models/university.model';
 import { AdminUniversityForm } from '../admin-university-form/admin-university-form';
 
@@ -18,8 +19,9 @@ import { AdminUniversityForm } from '../admin-university-form/admin-university-f
 export class AdminUniversitiesTab implements OnInit {
   private readonly universityService = inject(UniversityService);
   private readonly jsonExport = inject(JsonExportService);
+  private readonly countryConfig = inject(CountryConfigService);
 
-  countries: Country[] = REGION_GROUPS.flatMap((g) => g.countries);
+  countries: Country[] = [];
   selectedSlug = '';
   universities: University[] = [];
   loading = false;
@@ -30,10 +32,13 @@ export class AdminUniversitiesTab implements OnInit {
   editingUniversity: University | null = null;
 
   ngOnInit(): void {
-    if (this.countries.length) {
-      this.selectedSlug = this.countries[0].slug;
-      this.onCountryChange();
-    }
+    this.countryConfig.allCountries$.subscribe((countries) => {
+      this.countries = countries;
+      if (countries.length && !this.selectedSlug) {
+        this.selectedSlug = countries[0].slug;
+        this.onCountryChange();
+      }
+    });
   }
 
   get selectedCountryName(): string {
