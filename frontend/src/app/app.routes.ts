@@ -93,6 +93,13 @@ export const routes: Routes = [
   { path: 'country/uae',            component: CountryPage },
   { path: 'country/turkey',         component: CountryPage },
 
+  // ── Admin (content-authoring tool, password-gated client-side) ──
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./pages/admin-page/admin-page').then((m) => m.AdminPage),
+  },
+
   // Fallback
   { path: 'country/:country', component: ComingSoon },
   { path: '**', redirectTo: '' },

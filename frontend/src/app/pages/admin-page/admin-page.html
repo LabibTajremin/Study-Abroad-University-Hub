@@ -1,0 +1,52 @@
+@if (!authed) {
+  <div class="admin-gate">
+    <div class="admin-gate-card">
+      <mat-icon class="admin-gate-icon">admin_panel_settings</mat-icon>
+      <h2>Admin Access</h2>
+      <p>This is a content-authoring tool for the site maintainer. It edits data locally in your
+        browser only — nothing here changes the live site until you export and redeploy.</p>
+      <input
+        type="password"
+        class="admin-gate-input"
+        [(ngModel)]="passwordInput"
+        placeholder="Password"
+        (keydown.enter)="submitPassword()">
+      @if (passwordError) {
+        <span class="admin-gate-error">Incorrect password</span>
+      }
+      <button type="button" class="admin-gate-btn btn-motion" (click)="submitPassword()">Enter</button>
+    </div>
+  </div>
+} @else {
+  <div class="admin-shell">
+    <div class="admin-header">
+      <div>
+        <h1 class="admin-title">Admin — Content Tools</h1>
+        <p class="admin-subtitle">Local editing only — export and redeploy to publish changes.</p>
+      </div>
+      <button type="button" class="admin-logout btn-motion" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Exit
+      </button>
+    </div>
+
+    <div class="admin-tabs">
+      <button type="button" class="admin-tab" [class.active]="activeTab === 'universities'" (click)="setTab('universities')">
+        <mat-icon>school</mat-icon>
+        Manage Universities
+      </button>
+      <button type="button" class="admin-tab" [class.active]="activeTab === 'add-country'" (click)="setTab('add-country')">
+        <mat-icon>public</mat-icon>
+        Add Country
+      </button>
+    </div>
+
+    <div class="admin-tab-content">
+      @if (activeTab === 'universities') {
+        <app-admin-universities-tab />
+      } @else {
+        <app-admin-add-country-tab />
+      }
+    </div>
+  </div>
+}

@@ -1,0 +1,164 @@
+.uform {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.uform-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-faint, #94A3B8);
+  margin: 18px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border, #E2E8F0);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.uform-section-hint {
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-faint, #94A3B8);
+}
+
+.uform-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.uform-span-2 {
+  grid-column: span 2;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary, #334155);
+}
+
+.field-input {
+  height: 38px;
+  border: 1px solid var(--border, #E2E8F0);
+  border-radius: var(--radius-md, 8px);
+  padding: 0 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: var(--text-primary, #0F172A);
+  background: var(--surface, #fff);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+  }
+}
+
+.field-textarea {
+  height: auto;
+  min-height: 60px;
+  padding: 8px 12px;
+  resize: vertical;
+  line-height: 1.4;
+}
+
+.field-hint {
+  font-size: 11px;
+  color: var(--text-faint, #94A3B8);
+}
+
+.checkbox-field {
+  justify-content: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary, #334155);
+  cursor: pointer;
+
+  input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+}
+
+.uform-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border, #E2E8F0);
+}
+
+.btn-cancel,
+.btn-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  border-radius: var(--radius-md, 8px);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.btn-cancel {
+  background: var(--surface-alt, #F1F5F9);
+  color: var(--text-secondary, #475569);
+  border: 1px solid var(--border, #E2E8F0);
+
+  &:hover {
+    background: var(--border, #E2E8F0);
+  }
+}
+
+.btn-save {
+  background: #3B82F6;
+  color: #fff;
+  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.35);
+
+  &:hover {
+    background: #2563EB;
+    box-shadow: var(--shadow-md, 0 6px 20px rgba(59, 130, 246, 0.3));
+  }
+}
+
+@media (max-width: 700px) {
+  .uform-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uform-span-2 {
+    grid-column: span 1;
+  }
+}

@@ -1,0 +1,84 @@
+<div class="uat-toolbar">
+  <div class="field-group">
+    <label class="field-label">Country</label>
+    <select class="field-input country-select" [(ngModel)]="selectedSlug" (ngModelChange)="onCountryChange()">
+      @for (c of countries; track c.slug) {
+        <option [value]="c.slug">{{ c.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="uat-toolbar-actions">
+    <button type="button" class="btn-add btn-motion" (click)="addNew()">
+      <mat-icon>add</mat-icon>
+      Add University
+    </button>
+    <button type="button" class="btn-export btn-motion" [disabled]="loading" (click)="exportJson()">
+      <mat-icon>download</mat-icon>
+      Export {{ selectedSlug }}-universities.json
+    </button>
+  </div>
+</div>
+
+@if (dirty) {
+  <div class="uat-dirty-banner">
+    <mat-icon>info</mat-icon>
+    <p>
+      You have unsaved changes in this list. Click <strong>Export</strong>, then replace
+      <code>frontend/public/data/{{ selectedSlug }}-universities.json</code> with the downloaded file and
+      commit/redeploy — changes here are <strong>not</strong> live until you do that.
+    </p>
+  </div>
+}
+
+@if (showForm) {
+  <div class="uat-form-panel">
+    <h3 class="uat-form-title">{{ isAddingNew ? 'Add University' : 'Edit University' }}</h3>
+    <app-admin-university-form
+      [university]="editingUniversity"
+      [countryName]="selectedCountryName"
+      (saved)="onSaved($event)"
+      (cancelled)="onCancelForm()" />
+  </div>
+} @else if (loading) {
+  <p class="uat-loading">Loading {{ selectedCountryName }}…</p>
+} @else {
+  <div class="uat-table-wrapper">
+    <table class="uat-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>City</th>
+          <th>Type</th>
+          <th>BSc Tuition (EUR)</th>
+          <th>MSc Tuition (EUR)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of universities; track u.id) {
+          <tr>
+            <td class="uat-name">{{ u.name }}</td>
+            <td>{{ u.city }}</td>
+            <td>{{ u.type }}</td>
+            <td>{{ u.isTuitionFree ? 'Free' : (u.bachelorTuitionEUR + ' EUR') }}</td>
+            <td>{{ u.isTuitionFree ? 'Free' : (u.masterTuitionEUR + ' EUR') }}</td>
+            <td class="uat-row-actions">
+              <button type="button" class="icon-btn" (click)="edit(u)" matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button type="button" class="icon-btn icon-btn-danger" (click)="delete(u)" matTooltip="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        }
+        @if (universities.length === 0) {
+          <tr>
+            <td colspan="6" class="uat-empty">No universities yet for {{ selectedCountryName }} — click "Add University" above.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

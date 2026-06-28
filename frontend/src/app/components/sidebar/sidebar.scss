@@ -453,6 +453,30 @@ $sidebar-collapsed: 64px;
   }
 }
 
+.sidebar-admin-link {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  color: $sidebar-text-muted;
+  flex-shrink: 0;
+  transition: color 0.18s var(--ease-standard, ease), background-color 0.18s var(--ease-standard, ease);
+
+  mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+
+  &:hover {
+    color: #60A5FA;
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
 // ── Collapsed ──
 .collapsed {
   .sidebar-brand {

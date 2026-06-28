@@ -1,0 +1,71 @@
+<div class="aac-intro">
+  <mat-icon>info</mat-icon>
+  <p>
+    Country taxonomy (regions, routes, accent colors) lives in TypeScript source files, not JSON —
+    so adding a country needs a small code change. Fill this in and it'll generate the exact lines
+    to paste into the right files, plus a starter (empty) data file you can fill in via
+    <strong>Manage Universities</strong> once it's deployed.
+  </p>
+</div>
+
+<form [formGroup]="form" class="aac-form">
+  <div class="field-group">
+    <label class="field-label">Country name *</label>
+    <input class="field-input" formControlName="name" (input)="onNameChange($any($event.target).value)" placeholder="e.g. Vietnam">
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Slug *</label>
+    <input class="field-input" formControlName="slug" placeholder="e.g. vietnam">
+    <span class="field-hint">Used in the URL: /country/&lt;slug&gt; — lowercase, hyphenated</span>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">ISO 3166-1 alpha-2 code *</label>
+    <input class="field-input" formControlName="iso2" placeholder="e.g. vn" maxlength="6">
+    <span class="field-hint">Used for the real flag image (flagcdn.com)</span>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Add to which region group? *</label>
+    <select class="field-input" formControlName="targetGroupSlug">
+      @for (g of existingGroups; track g.slug) {
+        <option [value]="g.slug">{{ g.label }}</option>
+      }
+    </select>
+    <span class="field-hint">For a brand-new region, generate this first then manually add a new group in country.model.ts</span>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Accent color *</label>
+    <div class="color-row">
+      <input type="color" formControlName="accentColor" class="color-swatch">
+      <input class="field-input" formControlName="accentColor" placeholder="#3B82F6">
+    </div>
+    <span class="field-hint">Used to theme that country's page — pick a color from its flag</span>
+  </div>
+
+  <div class="aac-actions">
+    <button type="button" class="btn-generate btn-motion" (click)="generate()">
+      <mat-icon>auto_fix_high</mat-icon>
+      Generate snippet
+    </button>
+    <button type="button" class="btn-download btn-motion" (click)="downloadStarterFile()">
+      <mat-icon>download</mat-icon>
+      Download starter JSON file
+    </button>
+  </div>
+</form>
+
+@if (snippet) {
+  <div class="aac-snippet-panel">
+    <div class="aac-snippet-header">
+      <h3>Paste these into the project</h3>
+      <button type="button" class="btn-copy btn-motion" (click)="copySnippet()">
+        <mat-icon>content_copy</mat-icon>
+        Copy
+      </button>
+    </div>
+    <pre class="aac-snippet">{{ snippet }}</pre>
+  </div>
+}

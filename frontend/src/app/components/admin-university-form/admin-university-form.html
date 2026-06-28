@@ -1,0 +1,187 @@
+<form [formGroup]="form" class="uform" (ngSubmit)="onSave()">
+
+  <!-- Basic info -->
+  <h3 class="uform-section-title">Basic info</h3>
+  <div class="uform-grid">
+    <div class="field-group">
+      <label class="field-label">Name *</label>
+      <input class="field-input" formControlName="name" placeholder="e.g. Technical University of Munich">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Local name</label>
+      <input class="field-input" formControlName="localName" placeholder="Native-language name (optional)">
+    </div>
+    <div class="field-group">
+      <label class="field-label">City *</label>
+      <input class="field-input" formControlName="city">
+    </div>
+    <div class="field-group">
+      <label class="field-label">State / Province</label>
+      <input class="field-input" formControlName="state">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Type *</label>
+      <select class="field-input" formControlName="type">
+        <option value="Public">Public</option>
+        <option value="Private">Private</option>
+        <option value="Church-Affiliated">Church-Affiliated</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Category</label>
+      <input class="field-input" formControlName="category" placeholder="e.g. Research University">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Degree types</label>
+      <input class="field-input" formControlName="degreeTypes" placeholder="Bachelor, Master, PhD">
+      <span class="field-hint">Comma-separated</span>
+    </div>
+    <div class="field-group">
+      <label class="field-label">QS Ranking</label>
+      <input class="field-input" type="number" formControlName="ranking" placeholder="Leave blank if unranked">
+    </div>
+  </div>
+
+  <!-- Tuition -->
+  <h3 class="uform-section-title">Tuition</h3>
+  <div class="uform-grid">
+    <div class="field-group">
+      <label class="field-label">Bachelor tuition (EUR/yr) *</label>
+      <input class="field-input" type="number" formControlName="bachelorTuitionEUR" (blur)="bdtFromEur('bachelorTuitionEUR', 'bachelorTuitionBDT')">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Bachelor tuition (BDT/yr) *</label>
+      <input class="field-input" type="number" formControlName="bachelorTuitionBDT">
+      <span class="field-hint">Auto-fills as EUR × 128 on blur — edit if needed</span>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Master tuition (EUR/yr) *</label>
+      <input class="field-input" type="number" formControlName="masterTuitionEUR" (blur)="bdtFromEur('masterTuitionEUR', 'masterTuitionBDT')">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Master tuition (BDT/yr) *</label>
+      <input class="field-input" type="number" formControlName="masterTuitionBDT">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Semester contribution (EUR)</label>
+      <input class="field-input" type="number" formControlName="semesterbeitrag">
+      <span class="field-hint">Germany-style semester fee; 0 if not applicable</span>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Cost category *</label>
+      <select class="field-input" formControlName="costCategory">
+        <option value="Free">Free</option>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+    </div>
+    <div class="field-group checkbox-field">
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="isTuitionFree">
+        Tuition-free
+      </label>
+    </div>
+    <div class="field-group uform-span-2">
+      <label class="field-label">Tuition note / source</label>
+      <textarea class="field-input field-textarea" formControlName="tuitionNote" placeholder="Cite the source and currency; flag if uncertain"></textarea>
+    </div>
+  </div>
+
+  <!-- Requirements & links -->
+  <h3 class="uform-section-title">Requirements & links</h3>
+  <div class="uform-grid">
+    <div class="field-group uform-span-2">
+      <label class="field-label">Bachelor requirements</label>
+      <textarea class="field-input field-textarea" formControlName="bachelorRequirements"></textarea>
+    </div>
+    <div class="field-group uform-span-2">
+      <label class="field-label">Master requirements</label>
+      <textarea class="field-input field-textarea" formControlName="masterRequirements"></textarea>
+    </div>
+    <div class="field-group uform-span-2">
+      <label class="field-label">Website URL</label>
+      <input class="field-input" formControlName="websiteUrl" placeholder="https://...">
+    </div>
+  </div>
+
+  <!-- Optional eligibility fields -->
+  <h3 class="uform-section-title">
+    Optional eligibility fields
+    <span class="uform-section-hint">Leave blank unless the figure is genuinely well-known and confirmed</span>
+  </h3>
+  <div class="uform-grid">
+    <div class="field-group">
+      <label class="field-label">Living cost (USD/yr)</label>
+      <input class="field-input" type="number" formControlName="livingCostUSD">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Total cost (USD/yr)</label>
+      <input class="field-input" type="number" formControlName="totalCostUSD">
+    </div>
+    <div class="field-group">
+      <label class="field-label">GPA requirement (0–4.0)</label>
+      <input class="field-input" type="number" step="0.1" formControlName="gpaRequirement">
+    </div>
+    <div class="field-group">
+      <label class="field-label">IELTS requirement (0–9.0)</label>
+      <input class="field-input" type="number" step="0.5" formControlName="ieltsRequirement">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Admission difficulty</label>
+      <select class="field-input" formControlName="admissionDifficulty">
+        <option value="">— Unset —</option>
+        <option value="easy">Easy</option>
+        <option value="moderate">Moderate</option>
+        <option value="competitive">Competitive</option>
+        <option value="highly_competitive">Highly Competitive</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Study gap allowed</label>
+      <select class="field-input" formControlName="studyGapAllowed">
+        <option value="">— Unset —</option>
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+        <option value="conditional">Conditional</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Intake sessions</label>
+      <input class="field-input" formControlName="intakeSessions" placeholder="Fall, Spring">
+      <span class="field-hint">Comma-separated</span>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Application deadline</label>
+      <input class="field-input" formControlName="applicationDeadline" placeholder="e.g. 2026-07-15">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Application URL</label>
+      <input class="field-input" formControlName="applicationUrl">
+    </div>
+    <div class="field-group checkbox-field">
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="englishMediumAllowed">
+        English medium allowed
+      </label>
+    </div>
+    <div class="field-group checkbox-field">
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="scholarshipAvailable">
+        Scholarship available
+      </label>
+    </div>
+    <div class="field-group uform-span-2">
+      <label class="field-label">Scholarship details</label>
+      <textarea class="field-input field-textarea" formControlName="scholarshipDetails"></textarea>
+    </div>
+  </div>
+
+  <div class="uform-actions">
+    <button type="button" class="btn-cancel btn-motion" (click)="onCancel()">Cancel</button>
+    <button type="submit" class="btn-save btn-motion">
+      <mat-icon>save</mat-icon>
+      Save
+    </button>
+  </div>
+</form>
