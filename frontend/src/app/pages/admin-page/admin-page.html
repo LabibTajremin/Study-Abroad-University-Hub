@@ -3,18 +3,28 @@
     <div class="admin-gate-card">
       <mat-icon class="admin-gate-icon">admin_panel_settings</mat-icon>
       <h2>Admin Access</h2>
-      <p>This is a content-authoring tool for the site maintainer. It edits data locally in your
-        browser only — nothing here changes the live site until you export and redeploy.</p>
+      <p>Saved changes commit directly to the repository and go live after Vercel redeploys
+        (usually under a minute).</p>
+      <input
+        type="text"
+        class="admin-gate-input"
+        [(ngModel)]="username"
+        placeholder="Username"
+        autocomplete="username"
+        (keydown.enter)="submitLogin()">
       <input
         type="password"
         class="admin-gate-input"
-        [(ngModel)]="passwordInput"
+        [(ngModel)]="password"
         placeholder="Password"
-        (keydown.enter)="submitPassword()">
-      @if (passwordError) {
-        <span class="admin-gate-error">Incorrect password</span>
+        autocomplete="current-password"
+        (keydown.enter)="submitLogin()">
+      @if (loginError) {
+        <span class="admin-gate-error">{{ loginError }}</span>
       }
-      <button type="button" class="admin-gate-btn btn-motion" (click)="submitPassword()">Enter</button>
+      <button type="button" class="admin-gate-btn btn-motion" [disabled]="loggingIn" (click)="submitLogin()">
+        {{ loggingIn ? 'Signing in…' : 'Enter' }}
+      </button>
     </div>
   </div>
 } @else {
@@ -22,7 +32,7 @@
     <div class="admin-header">
       <div>
         <h1 class="admin-title">Admin — Content Tools</h1>
-        <p class="admin-subtitle">Local editing only — export and redeploy to publish changes.</p>
+        <p class="admin-subtitle">Changes commit to GitHub and go live automatically.</p>
       </div>
       <button type="button" class="admin-logout btn-motion" (click)="logout()">
         <mat-icon>logout</mat-icon>
@@ -37,15 +47,15 @@
       </button>
       <button type="button" class="admin-tab" [class.active]="activeTab === 'add-country'" (click)="setTab('add-country')">
         <mat-icon>public</mat-icon>
-        Add Country
+        Manage Countries
       </button>
     </div>
 
     <div class="admin-tab-content">
       @if (activeTab === 'universities') {
-        <app-admin-universities-tab />
+        <app-admin-universities-tab (sessionExpired)="onSessionExpired()" />
       } @else {
-        <app-admin-add-country-tab />
+        <app-admin-add-country-tab (sessionExpired)="onSessionExpired()" />
       }
     </div>
   </div>

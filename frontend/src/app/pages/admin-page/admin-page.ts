@@ -1,18 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { AdminUniversitiesTab } from '../../components/admin-universities-tab/admin-universities-tab';
 import { AdminAddCountryTab } from '../../components/admin-add-country-tab/admin-add-country-tab';
-
-/**
- * NOTE ON SECURITY: this app has no backend, so this is a soft friction
- * gate only — anyone who reads the bundled JS can see this password. It
- * keeps the page out of casual reach, it does NOT protect against a
- * determined visitor. Don't rely on it to guard anything sensitive.
- */
-const ADMIN_PASSWORD = 'sauh-admin-2026';
-const SESSION_KEY = 'sauh-admin-authed';
+import { AdminApiService } from '../../services/admin-api';
 
 type AdminTab = 'universities' | 'add-country';
 
@@ -23,26 +15,48 @@ type AdminTab = 'universities' | 'add-country';
   styleUrl: './admin-page.scss',
 })
 export class AdminPage {
-  authed = sessionStorage.getItem(SESSION_KEY) === 'true';
-  passwordInput = '';
-  passwordError = false;
+  private readonly adminApi = inject(AdminApiService);
+
+  authed = this.adminApi.isLoggedIn;
+  username = '';
+  password = '';
+  loginError = '';
+  loggingIn = false;
 
   activeTab: AdminTab = 'universities';
 
-  submitPassword(): void {
-    if (this.passwordInput === ADMIN_PASSWORD) {
-      sessionStorage.setItem(SESSION_KEY, 'true');
-      this.authed = true;
-      this.passwordError = false;
-    } else {
-      this.passwordError = true;
+  submitLogin(): void {
+    if (!this.username || !this.password) {
+      this.loginError = 'Enter a username and password';
+      return;
     }
+    this.loggingIn = true;
+    this.loginError = '';
+
+    this.adminApi.login(this.username, this.password).subscribe({
+      next: () => {
+        this.authed = true;
+        this.loggingIn = false;
+      },
+      error: (err) => {
+        this.loggingIn = false;
+        this.loginError = err?.error?.error || 'Login failed — check your credentials.';
+      },
+    });
   }
 
   logout(): void {
-    sessionStorage.removeItem(SESSION_KEY);
+    this.adminApi.logout();
     this.authed = false;
-    this.passwordInput = '';
+    this.username = '';
+    this.password = '';
+  }
+
+  /** Called by child tabs when a save/delete call comes back 401 (token expired/invalid). */
+  onSessionExpired(): void {
+    this.adminApi.logout();
+    this.authed = false;
+    this.loginError = 'Your session expired — please log in again.';
   }
 
   setTab(tab: AdminTab): void {

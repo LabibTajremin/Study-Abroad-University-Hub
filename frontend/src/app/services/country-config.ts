@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, shareReplay, map } from 'rxjs';
 import { Country, RegionGroup, SidebarNode } from '../models/country.model';
 
-interface SidebarTreeRef {
+export interface SidebarTreeRef {
   groupSlug?: string;
   slug?: string;
   label?: string;
@@ -13,7 +13,7 @@ interface SidebarTreeRef {
   childGroupSlugs?: string[];
 }
 
-interface CountriesConfig {
+export interface CountriesConfig {
   regionGroups: RegionGroup[];
   sidebarTree: SidebarTreeRef[];
   countryThemes: Record<string, string>;
@@ -84,5 +84,15 @@ export class CountryConfigService {
 
   getAllCountrySlugs$(): Observable<string[]> {
     return this.allCountries$.pipe(map((countries) => countries.map((c) => c.slug)));
+  }
+
+  /** Raw config exactly as stored in JSON (group/slug references, not resolved) — used by the admin tool to mutate and re-save. */
+  getRawConfig$(): Observable<CountriesConfig> {
+    return this.config$;
+  }
+
+  /** Re-fetches the config bypassing the in-memory cache (e.g. right after the admin saves). */
+  reloadRawConfig$(): Observable<CountriesConfig> {
+    return this.http.get<CountriesConfig>(`data/countries-config.json?_=${Date.now()}`);
   }
 }

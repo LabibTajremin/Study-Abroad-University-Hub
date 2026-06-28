@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,6 +6,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { UniversityService } from '../../services/university';
 import { JsonExportService } from '../../services/json-export';
 import { CountryConfigService } from '../../services/country-config';
+import { AdminApiService } from '../../services/admin-api';
 import { Country } from '../../models/country.model';
 import { University } from '../../models/university.model';
 import { AdminUniversityForm } from '../admin-university-form/admin-university-form';
@@ -20,12 +21,19 @@ export class AdminUniversitiesTab implements OnInit {
   private readonly universityService = inject(UniversityService);
   private readonly jsonExport = inject(JsonExportService);
   private readonly countryConfig = inject(CountryConfigService);
+  private readonly adminApi = inject(AdminApiService);
+
+  @Output() sessionExpired = new EventEmitter<void>();
 
   countries: Country[] = [];
   selectedSlug = '';
   universities: University[] = [];
   loading = false;
   dirty = false;
+
+  saving = false;
+  saveError = '';
+  saveSuccess = '';
 
   showForm = false;
   isAddingNew = false;
@@ -50,6 +58,8 @@ export class AdminUniversitiesTab implements OnInit {
     this.loading = true;
     this.dirty = false;
     this.showForm = false;
+    this.saveError = '';
+    this.saveSuccess = '';
     this.universityService.clearCache(this.selectedSlug);
     this.universityService.fetchUniversities(this.selectedSlug).subscribe((data) => {
       this.universities = data.map((u) => ({ ...u }));
@@ -90,15 +100,44 @@ export class AdminUniversitiesTab implements OnInit {
   }
 
   delete(u: University): void {
-    if (!confirm(`Remove "${u.name}" from this list? This only affects the exported file, not the live site.`)) {
+    if (!confirm(`Remove "${u.name}"? This stages a removal — click Save to commit it.`)) {
       return;
     }
     this.universities = this.universities.filter((x) => x.id !== u.id);
     this.dirty = true;
   }
 
-  exportJson(): void {
+  /** Replaces the whole working list — used after a validated JSON/Excel upload. */
+  replaceAll(universities: University[]): void {
+    this.universities = universities;
+    this.dirty = true;
+    this.showForm = false;
+  }
+
+  save(): void {
+    this.saving = true;
+    this.saveError = '';
+    this.saveSuccess = '';
+
+    this.adminApi.saveUniversities(this.selectedSlug, this.universities).subscribe({
+      next: () => {
+        this.saving = false;
+        this.dirty = false;
+        this.saveSuccess = 'Saved — Vercel is redeploying, changes will be live in about a minute.';
+        this.universityService.clearCache(this.selectedSlug);
+      },
+      error: (err) => {
+        this.saving = false;
+        if (err?.status === 401) {
+          this.sessionExpired.emit();
+          return;
+        }
+        this.saveError = err?.error?.error || 'Failed to save — please try again.';
+      },
+    });
+  }
+
+  downloadBackup(): void {
     this.jsonExport.download(`${this.selectedSlug}-universities.json`, this.universities);
-    this.dirty = false;
   }
 }

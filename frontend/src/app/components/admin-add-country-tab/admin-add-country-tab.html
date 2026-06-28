@@ -1,71 +1,115 @@
-<div class="aac-intro">
-  <mat-icon>info</mat-icon>
-  <p>
-    Country taxonomy (regions, routes, accent colors) lives in TypeScript source files, not JSON —
-    so adding a country needs a small code change. Fill this in and it'll generate the exact lines
-    to paste into the right files, plus a starter (empty) data file you can fill in via
-    <strong>Manage Universities</strong> once it's deployed.
-  </p>
+<div class="aac-toolbar">
+  <h3 class="aac-toolbar-title">Countries ({{ rows.length }})</h3>
+  <button type="button" class="btn-add btn-motion" (click)="addNew()">
+    <mat-icon>add</mat-icon>
+    Add Country
+  </button>
 </div>
 
-<form [formGroup]="form" class="aac-form">
-  <div class="field-group">
-    <label class="field-label">Country name *</label>
-    <input class="field-input" formControlName="name" (input)="onNameChange($any($event.target).value)" placeholder="e.g. Vietnam">
+@if (saveSuccess) {
+  <div class="aac-success-banner">
+    <mat-icon>check_circle</mat-icon>
+    <p>{{ saveSuccess }}</p>
   </div>
+}
 
-  <div class="field-group">
-    <label class="field-label">Slug *</label>
-    <input class="field-input" formControlName="slug" placeholder="e.g. vietnam">
-    <span class="field-hint">Used in the URL: /country/&lt;slug&gt; — lowercase, hyphenated</span>
+@if (saveError) {
+  <div class="aac-error-banner">
+    <mat-icon>error</mat-icon>
+    <p>{{ saveError }}</p>
   </div>
+}
 
-  <div class="field-group">
-    <label class="field-label">ISO 3166-1 alpha-2 code *</label>
-    <input class="field-input" formControlName="iso2" placeholder="e.g. vn" maxlength="6">
-    <span class="field-hint">Used for the real flag image (flagcdn.com)</span>
-  </div>
+@if (showForm) {
+  <div class="aac-form-panel">
+    <h3 class="aac-form-title">{{ isAddingNew ? 'Add Country' : 'Edit Country' }}</h3>
+    <form [formGroup]="form" class="aac-form">
+      <div class="field-group">
+        <label class="field-label">Country name *</label>
+        <input class="field-input" formControlName="name" (input)="onNameChange($any($event.target).value)" placeholder="e.g. Vietnam">
+      </div>
 
-  <div class="field-group">
-    <label class="field-label">Add to which region group? *</label>
-    <select class="field-input" formControlName="targetGroupSlug">
-      @for (g of existingGroups; track g.slug) {
-        <option [value]="g.slug">{{ g.label }}</option>
+      <div class="field-group">
+        <label class="field-label">Slug *</label>
+        <input class="field-input" formControlName="slug" placeholder="e.g. vietnam" [readonly]="!isAddingNew">
+        <span class="field-hint">Used in the URL: /country/&lt;slug&gt; — can't be changed after creation</span>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">ISO 3166-1 alpha-2 code *</label>
+        <input class="field-input" formControlName="iso2" placeholder="e.g. vn" maxlength="6">
+        <span class="field-hint">Used for the real flag image (flagcdn.com)</span>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Region group *</label>
+        <select class="field-input" formControlName="targetGroupSlug">
+          @for (g of groupOptions; track g.slug) {
+            <option [value]="g.slug">{{ g.label }}</option>
+          }
+          <option [value]="NEW_GROUP_VALUE">+ Create new region group…</option>
+        </select>
+      </div>
+
+      @if (form.get('targetGroupSlug')?.value === NEW_GROUP_VALUE) {
+        <div class="field-group">
+          <label class="field-label">New region label</label>
+          <input class="field-input" formControlName="newGroupLabel" placeholder="e.g. Southeast Asia">
+        </div>
+        <div class="field-group">
+          <label class="field-label">New region icon (emoji)</label>
+          <input class="field-input" formControlName="newGroupIcon" placeholder="🌏">
+        </div>
       }
-    </select>
-    <span class="field-hint">For a brand-new region, generate this first then manually add a new group in country.model.ts</span>
-  </div>
 
-  <div class="field-group">
-    <label class="field-label">Accent color *</label>
-    <div class="color-row">
-      <input type="color" formControlName="accentColor" class="color-swatch">
-      <input class="field-input" formControlName="accentColor" placeholder="#3B82F6">
-    </div>
-    <span class="field-hint">Used to theme that country's page — pick a color from its flag</span>
-  </div>
+      <div class="field-group">
+        <label class="field-label">Accent color *</label>
+        <div class="color-row">
+          <input type="color" formControlName="accentColor" class="color-swatch">
+          <input class="field-input" formControlName="accentColor" placeholder="#3B82F6">
+        </div>
+        <span class="field-hint">Used to theme that country's page — pick a color from its flag</span>
+      </div>
 
-  <div class="aac-actions">
-    <button type="button" class="btn-generate btn-motion" (click)="generate()">
-      <mat-icon>auto_fix_high</mat-icon>
-      Generate snippet
-    </button>
-    <button type="button" class="btn-download btn-motion" (click)="downloadStarterFile()">
-      <mat-icon>download</mat-icon>
-      Download starter JSON file
-    </button>
+      <div class="aac-form-actions">
+        <button type="button" class="btn-cancel btn-motion" (click)="cancelForm()">Cancel</button>
+        <button type="button" class="btn-save btn-motion" [disabled]="saving" (click)="submitForm()">
+          <mat-icon>cloud_upload</mat-icon>
+          {{ saving ? 'Saving…' : 'Save' }}
+        </button>
+      </div>
+    </form>
   </div>
-</form>
-
-@if (snippet) {
-  <div class="aac-snippet-panel">
-    <div class="aac-snippet-header">
-      <h3>Paste these into the project</h3>
-      <button type="button" class="btn-copy btn-motion" (click)="copySnippet()">
-        <mat-icon>content_copy</mat-icon>
-        Copy
-      </button>
-    </div>
-    <pre class="aac-snippet">{{ snippet }}</pre>
+} @else if (loading) {
+  <p class="aac-loading">Loading countries…</p>
+} @else {
+  <div class="aac-table-wrapper">
+    <table class="aac-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Slug</th>
+          <th>Region</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows; track row.country.slug) {
+          <tr>
+            <td class="aac-name">{{ row.country.name }}</td>
+            <td><code>{{ row.country.slug }}</code></td>
+            <td>{{ row.groupLabel }}</td>
+            <td class="aac-row-actions">
+              <button type="button" class="icon-btn" (click)="edit(row)" matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button type="button" class="icon-btn icon-btn-danger" (click)="delete(row)" matTooltip="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
   </div>
 }

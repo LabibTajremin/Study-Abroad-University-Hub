@@ -13,21 +13,35 @@
       <mat-icon>add</mat-icon>
       Add University
     </button>
-    <button type="button" class="btn-export btn-motion" [disabled]="loading" (click)="exportJson()">
+    <button type="button" class="btn-export btn-motion" [disabled]="loading" (click)="downloadBackup()">
       <mat-icon>download</mat-icon>
-      Export {{ selectedSlug }}-universities.json
+      Download backup
+    </button>
+    <button type="button" class="btn-save btn-motion" [disabled]="loading || saving || !dirty" (click)="save()">
+      <mat-icon>cloud_upload</mat-icon>
+      {{ saving ? 'Saving…' : 'Save' }}
     </button>
   </div>
 </div>
 
+@if (saveSuccess) {
+  <div class="uat-success-banner">
+    <mat-icon>check_circle</mat-icon>
+    <p>{{ saveSuccess }}</p>
+  </div>
+}
+
+@if (saveError) {
+  <div class="uat-error-banner">
+    <mat-icon>error</mat-icon>
+    <p>{{ saveError }}</p>
+  </div>
+}
+
 @if (dirty) {
   <div class="uat-dirty-banner">
     <mat-icon>info</mat-icon>
-    <p>
-      You have unsaved changes in this list. Click <strong>Export</strong>, then replace
-      <code>frontend/public/data/{{ selectedSlug }}-universities.json</code> with the downloaded file and
-      commit/redeploy — changes here are <strong>not</strong> live until you do that.
-    </p>
+    <p>You have unsaved changes. Click <strong>Save</strong> to commit them — they'll be live in about a minute.</p>
   </div>
 }
 
