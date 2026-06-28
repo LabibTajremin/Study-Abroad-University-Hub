@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { unsavedChangesGuard } from './guards/unsaved-changes.guard';
 
 export const routes: Routes = [
   // ── Dashboard (default landing) ──
@@ -38,6 +39,7 @@ export const routes: Routes = [
     path: 'admin',
     loadComponent: () =>
       import('./pages/admin-page/admin-page').then((m) => m.AdminPage),
+    canDeactivate: [unsavedChangesGuard],
   },
 
   // ── Country page — single dynamic route, lazy-loaded (it pulls in the

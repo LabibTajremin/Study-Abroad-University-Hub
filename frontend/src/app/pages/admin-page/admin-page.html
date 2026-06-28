@@ -34,7 +34,7 @@
         <h1 class="admin-title">Admin — Content Tools</h1>
         <p class="admin-subtitle">Changes commit to GitHub and go live automatically.</p>
       </div>
-      <button type="button" class="admin-logout btn-motion" (click)="logout()">
+      <button type="button" class="admin-logout btn-motion" (click)="requestLogout()">
         <mat-icon>logout</mat-icon>
         Exit
       </button>
@@ -44,6 +44,9 @@
       <button type="button" class="admin-tab" [class.active]="activeTab === 'universities'" (click)="setTab('universities')">
         <mat-icon>school</mat-icon>
         Manage Universities
+        @if (isDirty) {
+          <span class="dirty-dot" matTooltip="Unsaved changes"></span>
+        }
       </button>
       <button type="button" class="admin-tab" [class.active]="activeTab === 'add-country'" (click)="setTab('add-country')">
         <mat-icon>public</mat-icon>
@@ -53,10 +56,27 @@
 
     <div class="admin-tab-content">
       @if (activeTab === 'universities') {
-        <app-admin-universities-tab (sessionExpired)="onSessionExpired()" />
+        <app-admin-universities-tab (sessionExpired)="onSessionExpired()" (dirtyChanged)="onUniversitiesDirtyChanged($event)" />
       } @else {
         <app-admin-add-country-tab (sessionExpired)="onSessionExpired()" />
       }
     </div>
   </div>
+
+  @if (showUnsavedModal) {
+    <div class="unsaved-modal-backdrop">
+      <div class="unsaved-modal">
+        <mat-icon class="unsaved-modal-icon">warning</mat-icon>
+        <h3>Unsaved changes</h3>
+        <p>You have unsaved changes in Manage Universities. Do you want to save them before continuing?</p>
+        <div class="unsaved-modal-actions">
+          <button type="button" class="btn-modal-cancel btn-motion" [disabled]="savingFromModal" (click)="modalCancel()">Cancel</button>
+          <button type="button" class="btn-modal-discard btn-motion" [disabled]="savingFromModal" (click)="modalDiscardAndContinue()">Discard</button>
+          <button type="button" class="btn-modal-save btn-motion" [disabled]="savingFromModal" (click)="modalSaveAndContinue()">
+            {{ savingFromModal ? 'Saving…' : 'Save' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 }

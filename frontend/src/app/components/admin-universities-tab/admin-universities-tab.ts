@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Observable, catchError, map, of } from 'rxjs';
 import { UniversityService } from '../../services/university';
 import { JsonExportService } from '../../services/json-export';
 import { CountryConfigService } from '../../services/country-config';
@@ -26,6 +27,8 @@ export class AdminUniversitiesTab implements OnInit {
   private readonly importExport = inject(UniversityImportExportService);
 
   @Output() sessionExpired = new EventEmitter<void>();
+  /** Emits whenever there are (or no longer are) staged-but-unsaved changes — used by the parent to guard navigation. */
+  @Output() dirtyChanged = new EventEmitter<boolean>();
 
   countries: Country[] = [];
   selectedSlug = '';
@@ -58,10 +61,17 @@ export class AdminUniversitiesTab implements OnInit {
     return this.countries.find((c) => c.slug === this.selectedSlug)?.name ?? '';
   }
 
+  private setDirty(value: boolean): void {
+    if (this.dirty !== value) {
+      this.dirty = value;
+      this.dirtyChanged.emit(value);
+    }
+  }
+
   onCountryChange(): void {
     if (!this.selectedSlug) return;
     this.loading = true;
-    this.dirty = false;
+    this.setDirty(false);
     this.showForm = false;
     this.saveError = '';
     this.saveSuccess = '';
@@ -94,7 +104,7 @@ export class AdminUniversitiesTab implements OnInit {
         this.universities[idx] = result;
       }
     }
-    this.dirty = true;
+    this.setDirty(true);
     this.showForm = false;
     this.editingUniversity = null;
   }
@@ -109,37 +119,49 @@ export class AdminUniversitiesTab implements OnInit {
       return;
     }
     this.universities = this.universities.filter((x) => x.id !== u.id);
-    this.dirty = true;
+    this.setDirty(true);
   }
 
   /** Replaces the whole working list — used after a validated JSON/Excel upload. */
   replaceAll(universities: University[]): void {
     this.universities = universities;
-    this.dirty = true;
+    this.setDirty(true);
     this.showForm = false;
   }
 
   save(): void {
+    this.performSave().subscribe();
+  }
+
+  /** Returns true on success, false on failure — used by the unsaved-changes guard's "Save & leave" action. */
+  performSave(): Observable<boolean> {
     this.saving = true;
     this.saveError = '';
     this.saveSuccess = '';
 
-    this.adminApi.saveUniversities(this.selectedSlug, this.universities).subscribe({
-      next: () => {
+    return this.adminApi.saveUniversities(this.selectedSlug, this.universities).pipe(
+      map(() => {
         this.saving = false;
-        this.dirty = false;
+        this.setDirty(false);
         this.saveSuccess = 'Saved — Vercel is redeploying, changes will be live in about a minute.';
         this.universityService.clearCache(this.selectedSlug);
-      },
-      error: (err) => {
+        return true;
+      }),
+      catchError((err) => {
         this.saving = false;
         if (err?.status === 401) {
           this.sessionExpired.emit();
-          return;
+          return of(false);
         }
         this.saveError = err?.error?.error || 'Failed to save — please try again.';
-      },
-    });
+        return of(false);
+      })
+    );
+  }
+
+  /** Discards staged changes without saving — used by the unsaved-changes guard's "Discard" action. */
+  discardChanges(): void {
+    this.onCountryChange();
   }
 
   downloadBackup(): void {
