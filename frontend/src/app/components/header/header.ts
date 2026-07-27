@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -19,6 +19,9 @@ export class Header {
   private readonly router = inject(Router);
   private readonly countryConfig = inject(CountryConfigService);
   readonly themeService = inject(ThemeService);
+
+  /** Emitted when the mobile hamburger is tapped — App toggles the sidebar drawer. */
+  @Output() menuToggle = new EventEmitter<void>();
 
   /** Only set when the active route is actually a /country/:slug page — null elsewhere (dashboard, find, etc). */
   activeCountry: string | null = null;

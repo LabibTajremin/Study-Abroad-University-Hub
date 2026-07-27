@@ -52,13 +52,19 @@
         <mat-icon>public</mat-icon>
         Manage Countries
       </button>
+      <button type="button" class="admin-tab" [class.active]="activeTab === 'site-settings'" (click)="setTab('site-settings')">
+        <mat-icon>travel_explore</mat-icon>
+        Site &amp; SEO
+      </button>
     </div>
 
     <div class="admin-tab-content">
       @if (activeTab === 'universities') {
         <app-admin-universities-tab (sessionExpired)="onSessionExpired()" (dirtyChanged)="onUniversitiesDirtyChanged($event)" />
-      } @else {
+      } @else if (activeTab === 'add-country') {
         <app-admin-add-country-tab (sessionExpired)="onSessionExpired()" />
+      } @else {
+        <app-admin-site-settings-tab (sessionExpired)="onSessionExpired()" />
       }
     </div>
   </div>

@@ -5,13 +5,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AdminUniversitiesTab } from '../../components/admin-universities-tab/admin-universities-tab';
 import { AdminAddCountryTab } from '../../components/admin-add-country-tab/admin-add-country-tab';
+import { AdminSiteSettingsTab } from '../../components/admin-site-settings-tab/admin-site-settings-tab';
 import { AdminApiService } from '../../services/admin-api';
 
-type AdminTab = 'universities' | 'add-country';
+type AdminTab = 'universities' | 'add-country' | 'site-settings';
 
 @Component({
   selector: 'app-admin-page',
-  imports: [CommonModule, FormsModule, MatIconModule, MatTooltipModule, AdminUniversitiesTab, AdminAddCountryTab],
+  imports: [CommonModule, FormsModule, MatIconModule, MatTooltipModule, AdminUniversitiesTab, AdminAddCountryTab, AdminSiteSettingsTab],
   templateUrl: './admin-page.html',
   styleUrl: './admin-page.scss',
 })

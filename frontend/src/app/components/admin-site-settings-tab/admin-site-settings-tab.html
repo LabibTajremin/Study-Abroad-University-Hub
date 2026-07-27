@@ -1,0 +1,41 @@
+<div class="settings-tab">
+  @if (loading) {
+    <p class="settings-loading">Loading settings…</p>
+  } @else {
+    <section class="settings-card">
+      <div class="settings-card-head">
+        <mat-icon>travel_explore</mat-icon>
+        <div>
+          <h2>SEO &amp; Navigation</h2>
+          <p>Control site-wide options that affect search-engine visibility and navigation.</p>
+        </div>
+      </div>
+
+      <label class="setting-row">
+        <span class="setting-toggle" [class.on]="showFooterMenu">
+          <input type="checkbox" [(ngModel)]="showFooterMenu" />
+          <span class="setting-knob"></span>
+        </span>
+        <span class="setting-text">
+          <span class="setting-label">Show navigation menu in footer</span>
+          <span class="setting-desc">
+            Renders a crawlable list of destination links in the site footer. Recommended for SEO —
+            it gives search engines internal links to every country page without changing the main layout.
+          </span>
+        </span>
+      </label>
+
+      <div class="settings-actions">
+        @if (savedOk) {
+          <span class="settings-ok"><mat-icon>check_circle</mat-icon> Saved — live after redeploy.</span>
+        }
+        @if (error) {
+          <span class="settings-error"><mat-icon>error</mat-icon> {{ error }}</span>
+        }
+        <button type="button" class="settings-save btn-motion" [disabled]="saving" (click)="save()">
+          {{ saving ? 'Saving…' : 'Save settings' }}
+        </button>
+      </div>
+    </section>
+  }
+</div>

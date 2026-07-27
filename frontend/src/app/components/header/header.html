@@ -1,4 +1,12 @@
 <mat-toolbar class="app-header">
+  <button
+    type="button"
+    class="menu-toggle"
+    (click)="menuToggle.emit()"
+    aria-label="Open navigation menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+
   <div class="header-breadcrumb">
     <span class="header-title">Study Abroad University Hub</span>
     @if (activeCountry && activeIso2) {

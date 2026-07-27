@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,9 @@ import { FlagIcon } from '../flag-icon/flag-icon';
 })
 export class Sidebar implements OnInit {
   @Output() sidebarToggled = new EventEmitter<boolean>();
+
+  /** Controls the off-canvas drawer state on mobile (driven by the header hamburger). */
+  @Input() mobileOpen = false;
 
   private readonly router = inject(Router);
   private readonly countryConfig = inject(CountryConfigService);

@@ -1,0 +1,32 @@
+<footer class="app-footer">
+  @if (showMenu$ | async; as settings) {
+    @if (settings.showFooterMenu) {
+      <nav class="footer-nav" aria-label="Site navigation">
+        <div class="footer-col">
+          <h3 class="footer-heading">Explore</h3>
+          <ul class="footer-links">
+            <li><a routerLink="/">Dashboard</a></li>
+            <li><a routerLink="/find">Find Universities</a></li>
+            <li><a routerLink="/browse-countries">Browse Countries</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col footer-col-wide">
+          <h3 class="footer-heading">Popular Destinations</h3>
+          <ul class="footer-links footer-links-grid">
+            @for (country of (footerCountries$ | async); track trackBySlug($index, country)) {
+              <li>
+                <a [routerLink]="['/country', country.slug]">{{ country.name }}</a>
+              </li>
+            }
+          </ul>
+        </div>
+      </nav>
+    }
+  }
+
+  <div class="footer-base">
+    <p class="footer-brand">Study Abroad University Hub</p>
+    <p class="footer-copy">&copy; {{ year }} &mdash; Universities worldwide for international students.</p>
+  </div>
+</footer>

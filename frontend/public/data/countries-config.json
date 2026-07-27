@@ -156,5 +156,8 @@
     "singapore": "#ED2939",
     "uae": "#00732F",
     "turkey": "#E30A17"
+  },
+  "siteSettings": {
+    "showFooterMenu": true
   }
 }
