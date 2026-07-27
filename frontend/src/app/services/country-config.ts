@@ -13,11 +13,21 @@ export interface SidebarTreeRef {
   childGroupSlugs?: string[];
 }
 
+export interface SiteSettings {
+  /** Whether the SEO-friendly navigation menu is rendered in the site footer. */
+  showFooterMenu: boolean;
+}
+
 export interface CountriesConfig {
   regionGroups: RegionGroup[];
   sidebarTree: SidebarTreeRef[];
   countryThemes: Record<string, string>;
+  siteSettings?: SiteSettings;
 }
+
+export const DEFAULT_SITE_SETTINGS: SiteSettings = {
+  showFooterMenu: true,
+};
 
 /**
  * Loads the country taxonomy (regions, routes' valid slugs, accent colors) from
@@ -43,6 +53,11 @@ export class CountryConfigService {
 
   readonly allCountries$: Observable<Country[]> = this.regionGroups$.pipe(
     map((groups) => groups.flatMap((g) => g.countries))
+  );
+
+  /** Public site settings (footer SEO menu, etc.), falling back to defaults when absent from the JSON. */
+  readonly siteSettings$: Observable<SiteSettings> = this.config$.pipe(
+    map((c) => ({ ...DEFAULT_SITE_SETTINGS, ...(c.siteSettings ?? {}) }))
   );
 
   private resolveSidebarNode(ref: SidebarTreeRef, groups: RegionGroup[]): SidebarNode {

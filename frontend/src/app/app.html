@@ -1,17 +1,18 @@
-<div class="app-shell">
+<div class="app-shell" [class.mobile-nav-open]="mobileNavOpen">
   <!-- Sidebar -->
-  <app-sidebar (sidebarToggled)="onSidebarToggled($event)" />
+  <app-sidebar [mobileOpen]="mobileNavOpen" (sidebarToggled)="onSidebarToggled($event)" />
+
+  <!-- Backdrop (mobile drawer) -->
+  <div class="nav-backdrop" (click)="closeMobileNav()" aria-hidden="true"></div>
 
   <!-- Main Area -->
   <div class="main-area" [class.sidebar-collapsed]="sidebarCollapsed">
-    <app-header />
+    <app-header (menuToggle)="toggleMobileNav()" />
 
     <main class="page-content">
       <router-outlet />
     </main>
 
-    <footer class="app-footer">
-      <p>Study Abroad University Hub &mdash; Schengen Zone Universities</p>
-    </footer>
+    <app-footer />
   </div>
 </div>

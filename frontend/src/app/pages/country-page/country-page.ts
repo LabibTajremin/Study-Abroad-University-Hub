@@ -10,6 +10,7 @@ import { FlagIcon } from '../../components/flag-icon/flag-icon';
 import { ComingSoon } from '../coming-soon/coming-soon';
 import { UniversityService } from '../../services/university';
 import { CountryConfigService } from '../../services/country-config';
+import { SeoService } from '../../services/seo';
 import { Country } from '../../models/country.model';
 import {
   University,
@@ -30,6 +31,7 @@ export class CountryPage implements OnInit, OnDestroy {
   private readonly countryConfig = inject(CountryConfigService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly seo = inject(SeoService);
   private routeSub!: Subscription;
 
   // Country info
@@ -86,7 +88,17 @@ export class CountryPage implements OnInit, OnDestroy {
           this.notFound = found === null;
           this.currentFilters.country = found?.name || 'Germany';
           if (found) {
+            this.seo.update({
+              title: `Universities in ${found.name}`,
+              description: `Browse and compare top universities in ${found.name} — tuition, degree programs, cities and admission requirements for international students.`,
+              path: `/country/${found.slug}`,
+            });
             this.loadData();
+          } else {
+            this.seo.update({
+              title: 'Coming Soon',
+              description: 'University data for this destination is coming soon to Study Abroad University Hub.',
+            });
           }
         });
         this.countryConfig.getTheme$(slug).subscribe((color) => {

@@ -14,6 +14,38 @@
   z-index: 100;
 }
 
+// ── Mobile hamburger (hidden on desktop) ──
+.menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 4px;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  background: transparent;
+  color: var(--text-secondary, #475569);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.18s var(--ease-standard, ease), transform 0.12s var(--ease-standard, ease);
+
+  &:hover {
+    background: var(--surface-hover, #f1f5f9);
+    color: var(--text-primary, #0f172a);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
 .header-breadcrumb {
   display: flex;
   align-items: center;
@@ -106,4 +138,33 @@
 
 .theme-toggle.is-dark .theme-icon {
   color: #CBD5E1;
+}
+
+// ── Mobile ──
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 14px;
+    min-height: 56px;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+  }
+
+  .header-title {
+    font-size: 14.5px;
+  }
+
+  // The site title is redundant with the country chip on a country page,
+  // so hide it once a country is active to save horizontal room.
+  .header-country {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 420px) {
+  .header-divider,
+  .header-title {
+    display: none;
+  }
 }

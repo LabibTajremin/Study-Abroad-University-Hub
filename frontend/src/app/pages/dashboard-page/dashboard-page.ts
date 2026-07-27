@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { UniversityService } from '../../services/university';
 import { RecommendationService } from '../../services/recommendation';
 import { CountryConfigService } from '../../services/country-config';
+import { SeoService } from '../../services/seo';
 import { FlagIcon } from '../../components/flag-icon/flag-icon';
 
 interface StatCard {
@@ -42,6 +43,7 @@ export class DashboardPage implements OnInit {
   private readonly recommendationService = inject(RecommendationService);
   private readonly countryConfig = inject(CountryConfigService);
   private readonly router = inject(Router);
+  private readonly seo = inject(SeoService);
 
   stats: StatCard[] = [
     { icon: 'school',     value: '...',  label: 'Universities',      color: '#3B82F6' },
@@ -105,6 +107,13 @@ export class DashboardPage implements OnInit {
   regionStats: RegionStat[] = [];
 
   ngOnInit(): void {
+    this.seo.update({
+      title: 'Dashboard',
+      description:
+        'Study Abroad University Hub — explore universities across the globe, compare tuition and requirements, and get personalised recommendations for studying abroad.',
+      path: '/',
+    });
+
     this.countryConfig.regionGroups$.subscribe((groups) => {
       this.regionStats = groups.map((g) => ({
         flag: g.icon,

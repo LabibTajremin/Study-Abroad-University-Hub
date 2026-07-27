@@ -7,6 +7,7 @@ import { RecommendationCard } from '../../components/recommendation-card/recomme
 import { LoadingSpinner } from '../../components/loading-spinner/loading-spinner';
 import { StudentProfileService } from '../../services/student-profile';
 import { RecommendationService } from '../../services/recommendation';
+import { SeoService } from '../../services/seo';
 import { StudentProfile, UniversityRecommendation } from '../../models/university.model';
 
 @Component({
@@ -25,6 +26,7 @@ import { StudentProfile, UniversityRecommendation } from '../../models/universit
 export class HomePage implements OnInit {
   private readonly profileService = inject(StudentProfileService);
   private readonly recommendationService = inject(RecommendationService);
+  private readonly seo = inject(SeoService);
 
   profileSubmitted = false;
   loading = false;
@@ -33,6 +35,13 @@ export class HomePage implements OnInit {
   totalScanned = 0;
 
   ngOnInit(): void {
+    this.seo.update({
+      title: 'Find Universities',
+      description:
+        'Get personalised university recommendations. Enter your GPA, test scores and budget to find the best-matched universities abroad, ranked for you.',
+      path: '/find',
+    });
+
     const saved = this.profileService.getProfile();
     if (saved) {
       this.profileSubmitted = true;

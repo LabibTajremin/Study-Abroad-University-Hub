@@ -499,3 +499,44 @@ $sidebar-collapsed: 64px;
     border-left: none;
   }
 }
+
+// ═══════════════════════════════════════════════
+// Mobile — off-canvas drawer
+// Below 768px the sidebar leaves the flow and slides in from the left
+// over the content, toggled by the header hamburger. The desktop
+// collapse state is ignored here (always full-width drawer).
+// ═══════════════════════════════════════════════
+@media (max-width: 768px) {
+  .sidebar,
+  .sidebar.collapsed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    width: 82vw;
+    max-width: 300px;
+    min-width: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s var(--ease-standard, cubic-bezier(0.4, 0, 0.2, 1));
+    box-shadow: 8px 0 32px rgba(2, 6, 23, 0.4);
+    z-index: 200;
+
+    &.mobile-open {
+      transform: translateX(0);
+    }
+
+    // Force expanded look inside the drawer even if desktop-collapsed.
+    .brand-text {
+      display: flex;
+    }
+    .nav-item {
+      justify-content: flex-start;
+      padding: 11px 12px;
+    }
+  }
+
+  // Hide the desktop collapse toggle inside the mobile drawer.
+  .sidebar-toggle {
+    display: none;
+  }
+}

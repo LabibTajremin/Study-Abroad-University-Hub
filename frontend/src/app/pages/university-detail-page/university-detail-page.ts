@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { LoadingSpinner } from '../../components/loading-spinner/loading-spinner';
 import { UniversityService } from '../../services/university';
+import { SeoService } from '../../services/seo';
 import { University } from '../../models/university.model';
 
 @Component({
@@ -17,6 +18,7 @@ export class UniversityDetailPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly universityService = inject(UniversityService);
   private readonly location = inject(Location);
+  private readonly seo = inject(SeoService);
 
   university: University | null = null;
   countrySlug = '';
@@ -38,6 +40,11 @@ export class UniversityDetailPage implements OnInit {
         this.university = unis.find((u) => u.id === id) ?? null;
         if (!this.university) {
           this.error = `University with ID ${id} not found in ${this.countrySlug}.`;
+        } else {
+          this.seo.update({
+            title: this.university.name,
+            description: `${this.university.name} — tuition, programs, location and admission details for international students studying abroad.`,
+          });
         }
         this.loading = false;
       },

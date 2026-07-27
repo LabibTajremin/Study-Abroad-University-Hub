@@ -14,17 +14,36 @@
 
 .page-content {
   flex: 1;
-  background: var(--page-bg, #F8FAFC);
+  background: var(--page-bg, #f8fafc);
 }
 
-.app-footer {
-  background: #111827;
-  color: #64748B;
-  text-align: center;
-  padding: 14px;
-  font-size: 12px;
+// ── Mobile drawer backdrop ──
+// Hidden on desktop; fades in behind the off-canvas sidebar on mobile.
+.nav-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 190;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s var(--ease-standard, ease);
+}
 
-  p {
-    margin: 0;
+@media (max-width: 768px) {
+  .nav-backdrop {
+    display: block;
+  }
+
+  .app-shell.mobile-nav-open .nav-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  // The sidebar becomes an overlay drawer on mobile, so the main area
+  // should span the full width regardless of the desktop collapse state.
+  .main-area {
+    margin-left: 0 !important;
   }
 }

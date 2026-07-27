@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+
+Sitemap: https://study-abroad-university-hub.vercel.app/sitemap.xml
